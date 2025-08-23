@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Calorie Predictor v2.1 - Enhanced</title>
+    <script src="client_focused_engine.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #60c4de;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: black;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: rgba(0, 0, 0, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: black;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .predict-button {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .predict-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .predict-button:active {
+            transform: translateY(0);
+        }
+
+        .results-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: black;
+        }
+
+        .card-content {
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #007bff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏃‍♂️ Smart Fitness Tracker</h1>
+            <p>Get personalized workout predictions and focused recommendations</p>
+        </div>
+
+        <div class="input-section">
+            <form id="fitnessForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" min="18" max="100" value="25" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="height">Height (cm)</label>
+                        <input type="number" id="height" name="height" min="100" max="250" value="175" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" min="30" max="200" value="70" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity_level">Activity Level</label>
+                        <select id="activity_level" name="activity_level" required>
+                            <option value="sedentary">Sedentary</option>
+                            <option value="light">Light</option>
+                            <option value="moderate" selected>Moderate</option>
+                            <option value="active">Active</option>
+                            <option value="very_active">Very Active</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="workout_type">Workout Type</label>
+                        <select id="workout_type" name="workout_type" required>
+                            <option value="cardio" selected>Cardio</option>
+                            <option value="strength">Strength Training</option>
+                            <option value="hiit">HIIT</option>
+                            <option value="yoga">Yoga</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="workout_duration">Duration (minutes)</label>
+                        <input type="number" id="workout_duration" name="workout_duration" min="5" max="180" value="30" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="workout_intensity">Intensity</label>
+                        <select id="workout_intensity" name="workout_intensity" required>
+                            <option value="light">Light</option>
+                            <option value="moderate" selected>Moderate</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fitness_goal">Fitness Goal</label>
+                        <select id="fitness_goal" name="fitness_goal" required>
+                            <option value="weight_loss">Weight Loss</option>
+                            <option value="maintenance" selected>Maintenance</option>
+                            <option value="weight_gain">Weight Gain</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="predict-button" id="predictButton">
+                    Get Smart Recommendations
+                </button>
+            </form>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Generating your personalized recommendations...</p>
+        </div>
+
+        <div class="results-section hidden" id="results">
+            <!-- Smart Recommendations -->
+            <div class="result-card">
+                <div class="card-header">
+                    <span class="card-icon">💧</span>
+                    <span class="card-title">Specific Hydration</span>
+                </div>
+                <div class="card-content" id="hydrationContent">
+                    <!-- Hydration recommendations will be inserted here -->
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="card-header">
+                    <span class="card-icon">🍎</span>
+                    <span class="card-title">Personalized Nutrition</span>
+                </div>
+                <div class="card-content" id="nutritionContent">
+                    <!-- Nutrition recommendations will be inserted here -->
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="card-header">
+                    <span class="card-icon">🎯</span>
+                    <span class="card-title">Workout Benefits</span>
+                </div>
+                <div class="card-content" id="workoutContent">
+                    <!-- Workout benefits will be inserted here -->
+                </div>
+            </div>
+
+            <div class="result-card">
+                <div class="card-header">
+                    <span class="card-icon">❤️</span>
+                    <span class="card-title">Heart Rate Zones</span>
+                </div>
+                <div class="card-content" id="heartRateContent">
+                    <!-- Heart rate zones will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Smart Fitness Tracker initialized');
+            console.log('🔧 Client-side focused engine loaded:', typeof window.clientFocusedEngine);
+            
+            const form = document.getElementById('fitnessForm');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const predictButton = document.getElementById('predictButton');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                console.log('🚀 Form submitted, generating recommendations...');
+                
+                // Show loading, hide results
+                loading.classList.add('show');
+                results.classList.add('hidden');
+                predictButton.disabled = true;
+                predictButton.textContent = 'Generating...';
+
+                // Get form data
+                const formData = new FormData(form);
+                const userData = {};
+                for (let [key, value] of formData.entries()) {
+                    userData[key] = isNaN(value) ? value : Number(value);
+                }
+                
+                console.log('📊 User data:', userData);
+
+                // Simulate loading delay for better UX
+                setTimeout(() => {
+                    try {
+                        // Generate focused recommendations using client-side engine
+                        const recommendations = window.clientFocusedEngine.generateRecommendations(userData);
+                        
+                        console.log('✅ Recommendations generated:', recommendations);
+                        
+                        if (recommendations.success) {
+                            displayRecommendations(recommendations.smart_recommendations);
+                        } else {
+                            console.error('❌ Failed to generate recommendations');
+                            alert('Failed to generate recommendations. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('❌ Error generating recommendations:', error);
+                        alert('Error generating recommendations: ' + error.message);
+                    } finally {
+                        // Hide loading, show results
+                        loading.classList.remove('show');
+                        results.classList.remove('hidden');
+                        predictButton.disabled = false;
+                        predictButton.textContent = 'Get Smart Recommendations';
+                    }
+                }, 1000);
+            });
+
+            function displayRecommendations(smartRecs) {
+                console.log('🎨 Displaying recommendations:', smartRecs);
+
+                // Display Hydration Strategy
+                if (smartRecs.hydration_strategy) {
+                    const hydration = smartRecs.hydration_strategy;
+                    const hydrationHTML = `
+                        <div class="metric-value">${hydration.daily_total}</div>
+                        <div class="metric-label">Daily water target</div>
+                        ${hydration.recommendations.map(rec => 
+                            `<div class="recommendation-item">${rec}</div>`
+                        ).join('')}
+                    `;
+                    document.getElementById('hydrationContent').innerHTML = hydrationHTML;
+                }
+
+                // Display Nutrition Strategy
+                if (smartRecs.nutrition_strategy) {
+                    const nutrition = smartRecs.nutrition_strategy;
+                    const nutritionHTML = `
+                        <div class="metric-value">${nutrition.daily_targets.calories} cal</div>
+                        <div class="metric-label">Daily calorie target</div>
+                        <div class="recommendation-item">
+                            <strong>BMR:</strong> ${nutrition.bmr}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Protein:</strong> ${nutrition.macros.protein}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Carbs:</strong> ${nutrition.macros.carbs}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Fat:</strong> ${nutrition.macros.fat}
+                        </div>
+                    `;
+                    document.getElementById('nutritionContent').innerHTML = nutritionHTML;
+                }
+
+                // Display Workout Benefits
+                if (smartRecs.workout_benefits) {
+                    const workout = smartRecs.workout_benefits;
+                    const workoutHTML = `
+                        <div class="metric-value">${workout.calorie_burn_range} cal</div>
+                        <div class="metric-label">Estimated calorie burn</div>
+                        <div class="recommendation-item">
+                            <strong>Muscle Groups:</strong> ${workout.muscle_groups.join(', ')}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Recovery Time:</strong> ${workout.recovery_time}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Benefits:</strong> ${workout.primary_benefits.join(', ')}
+                        </div>
+                    `;
+                    document.getElementById('workoutContent').innerHTML = workoutHTML;
+                }
+
+                // Display Heart Rate Zones
+                if (smartRecs.heart_rate_zones) {
+                    const hr = smartRecs.heart_rate_zones;
+                    const heartRateHTML = `
+                        <div class="metric-value">${hr.max_heart_rate}</div>
+                        <div class="metric-label">Max heart rate</div>
+                        <div class="recommendation-item">
+                            <strong>Fat Burn Zone:</strong> ${hr.fat_burn_zone}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Cardio Zone:</strong> ${hr.cardio_zone}
+                        </div>
+                        <div class="recommendation-item">
+                            <strong>Peak Zone:</strong> ${hr.peak_zone}
+                        </div>
+                    `;
+                    document.getElementById('heartRateContent').innerHTML = heartRateHTML;
+                }
+
+                console.log('✅ All recommendations displayed successfully');
+            }
+        });
+    </script>
+</body>
+</html>

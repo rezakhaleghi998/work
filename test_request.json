@@ -1,0 +1,17 @@
+{
+  "age": 25,
+  "weight": 70,
+  "height": 175,
+  "workout_type": "Running",
+  "workout_duration": 45,
+  "intensity": 2,
+  "heart_rate": 150,
+  "resting_heart_rate": 70,
+  "vo2_max": 40,
+  "body_fat": 15,
+  "sleep_hours": 7,
+  "water_intake": 2.5,
+  "activity_level": 3,
+  "gender": "Male",
+  "mood_before": "Good"
+}
