@@ -14,9 +14,15 @@
       "Bash(git pull:*)",
       "Bash(git checkout:*)",
       "Bash(del nul)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(copy \"recommendation_engine.js\" \"fitness-web-deploy1\"\")",
+      "Bash(copy:*)",
+      "Bash(start fitness-web-deploy2/index.html)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\Users\\Rezvan\\Desktop\\workkkk"
+    ]
   }
 }

@@ -59,10 +59,9 @@ class RecommendationUI {
      */
     generateRecommendationSection() {
         return `
-        <div class="section-header">
-            <h2 style="color: black; font-size: 1.8rem; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 3px solid #60c4de; padding-bottom: 10px;">
-                Section 3.3: Personalized Recommendations
-            </h2>
+        <div class="card-header">
+            <span class="card-icon">🧠</span>
+            <span class="card-title">3.2 Smart Recommendations</span>
         </div>
         
         <div id="recommendationContainer" class="recommendation-main-container">

@@ -2020,326 +2020,6 @@
                 justify-content: center;
             }
         }
-        
-        /* ===== SECTION 3.2 ANIMATION ===== */
-        
-        /* Section 3.2 Container Animation */
-        #section32Container {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: section32FadeInSlide 0.8s ease-out 0.3s forwards;
-        }
-        
-        /* Section 3.2 Smooth Fade-In and Slide-In Animation */
-        @keyframes section32FadeInSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Section 3.3 Container Animation */
-        #section33Container {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: section33FadeInSlide 0.8s ease-out 0.3s forwards;
-        }
-        
-        /* Section 3.3 Smooth Fade-In and Slide-In Animation */
-        @keyframes section33FadeInSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Section 3.3 Container - Full Width Layout with Animation */
-        #section33Container {
-            grid-column: 1 / -1; /* Span all columns in the grid */
-            width: 100%;
-            max-width: none;
-            margin: 40px 0 20px 0;
-            padding: 0;
-            box-sizing: border-box;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: section33FadeInSlide 0.8s ease-out 0.5s forwards;
-        }
-
-        /* Section 3.3 Smooth Fade-In and Slide-In Animation */
-        @keyframes section33FadeInSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-container {
-            width: 100%;
-            max-width: none;
-            margin: 0 auto;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* AI Recommendation Cards Grid - Proper Layout */
-        .ai-recommendation-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin: 30px 0;
-            padding: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        @media (max-width: 1200px) {
-            .ai-recommendation-cards-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .ai-recommendation-cards-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-        }
-
-        /* AI Recommendation Card Styling - Clean and Readable */
-        .ai-recommendation-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            min-height: 380px;
-            width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ai-recommendation-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: var(--card-gradient);
-            z-index: 1;
-        }
-
-        .ai-recommendation-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        /* AI Card Headers - Clean Design */
-        .ai-card-header {
-            padding: 20px 20px 16px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.06);
-            background: rgba(248, 250, 252, 0.6);
-            flex-shrink: 0;
-        }
-
-        .ai-card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--card-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            flex-shrink: 0;
-        }
-
-        .ai-card-icon .icon-emoji {
-            font-size: 24px;
-            line-height: 1;
-        }
-
-        .ai-card-title-section {
-            flex: 1;
-        }
-
-        .ai-card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin: 0 0 4px 0;
-            line-height: 1.3;
-        }
-
-        .ai-card-subtitle {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        /* AI Card Content - Flexible Layout */
-        .ai-card-content {
-            padding: 20px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .ai-recommendations-visible,
-        .ai-recommendations-hidden {
-            margin-bottom: 10px;
-        }
-
-        .ai-recommendation-item {
-            margin-bottom: 14px;
-            padding: 16px;
-            background: rgba(248, 250, 252, 0.8);
-            border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-left: 4px solid var(--item-color, #667eea);
-            transition: all 0.2s ease;
-        }
-
-        .ai-recommendation-item:hover {
-            background: rgba(248, 250, 252, 1);
-            border-left-width: 5px;
-        }
-
-        .ai-recommendation-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .ai-recommendation-text {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #2d3748;
-            margin: 0 0 8px 0;
-            font-weight: 500;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .ai-recommendation-detail {
-            font-size: 0.85rem;
-            color: #4a5568;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            font-style: normal;
-            line-height: 1.4;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        /* AI Progress Indicator */
-        .ai-progress-indicator {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: var(--card-gradient);
-            width: 0%;
-            transition: width 2s ease-in-out;
-        }
-
-        .ai-recommendation-card.loaded .ai-progress-indicator {
-            width: 100%;
-        }
-
-        /* Tooltip System for Performance Summary */
-        .tooltip-icon {
-            color: rgba(255, 255, 255, 0.8);
-            cursor: help;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .tooltip-icon:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .tooltip-icon[data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            white-space: nowrap;
-            max-width: 250px;
-            white-space: normal;
-            text-align: left;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .tooltip-icon[data-tooltip]::before {
-            content: '';
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 5px solid transparent;
-            border-top-color: rgba(0, 0, 0, 0.9);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .tooltip-icon:hover[data-tooltip]::after,
-        .tooltip-icon:hover[data-tooltip]::before {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Responsive tooltip adjustments */
-        @media (max-width: 768px) {
-            .tooltip-icon[data-tooltip]::after {
-                max-width: 200px;
-                font-size: 0.8rem;
-                padding: 6px 10px;
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -2459,47 +2139,32 @@
                         <!-- Overall Score -->
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="overallScore">8.2</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Overall Score
-                                <span class="tooltip-icon" data-tooltip="Combined rating of your workout efficiency, heart rate performance, and goal achievement (0-10 scale)">ⓘ</span>
-                            </div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">Overall Score</div>
                             <div style="font-size: 0.8rem; margin-top: 4px;" id="overallTrend">📈 +0.3 vs last week</div>
                         </div>
                         <!-- Performance Index -->
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="performanceIndex">85%</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Performance Index
-                                <span class="tooltip-icon" data-tooltip="How your actual calorie burn compares to expected burn for your profile (100% = meeting expectations)">ⓘ</span>
-                            </div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">Performance Index</div>
                             <div style="font-size: 0.8rem; margin-top: 4px;" id="performanceTrendIndicator">🚀 Excellent</div>
                         </div>
                         <!-- Consistency Rating -->
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="consistencyRating">7.8</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Consistency Rating
-                                <span class="tooltip-icon" data-tooltip="Measure of workout regularity and performance stability over time">ⓘ</span>
-                            </div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">Consistency Rating</div>
                             <div style="font-size: 0.8rem; margin-top: 4px;" id="consistencyTrend">📊 Stable</div>
                         </div>
                         <!-- Progress Status -->
                         <div style="text-align: center;">
                             <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="progressStatus">⬆️</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Progress Status
-                                <span class="tooltip-icon" data-tooltip="Current trend direction based on recent workout performance">ⓘ</span>
-                            </div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">Progress Status</div>
                             <div style="font-size: 0.8rem; margin-top: 4px;" id="progressDescription">Improving</div>
                         </div>
                     </div>
                     <!-- Progress Bar -->
                     <div style="margin: 20px 0 10px 0;">
                         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 8px;">
-                            <span style="display: flex; align-items: center; gap: 6px;">
-                                Monthly Progress
-                                <span class="tooltip-icon" data-tooltip="Performance change compared to previous month's average">ⓘ</span>
-                            </span>
+                            <span>Monthly Progress</span>
                             <span id="monthlyProgress">+12%</span>
                         </div>
                         <div style="background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; overflow: hidden;">
@@ -2988,12 +2653,90 @@
                     <h2 style="color: black; font-size: 1.8rem; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 3px solid #60c4de; padding-bottom: 10px;">Section 3: Wellness Plan (To-Do)</h2>
                 </div>
                 
+                            <!-- Hydration Strategy -->
+                            <div class="focused-recommendation-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                                <div class="recommendation-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 24px; margin-right: 12px;">💧</span>
+                                    <h4 style="color: white; margin: 0; font-size: 16px;">Specific Hydration Protocol</h4>
+                                </div>
+                                <div class="recommendation-content" id="hydrationRecommendations" style="color: white;">
+                                    <!-- Hydration recommendations will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Nutrition Strategy -->
+                            <div class="focused-recommendation-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                                <div class="recommendation-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 24px; margin-right: 12px;">🍎</span>
+                                    <h4 style="color: white; margin: 0; font-size: 16px;">Personalized Nutrition Plan</h4>
+                                </div>
+                                <div class="recommendation-content" id="nutritionRecommendations" style="color: white;">
+                                    <!-- Nutrition recommendations will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Workout Benefits -->
+                            <div class="focused-recommendation-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                                <div class="recommendation-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 24px; margin-right: 12px;">🎯</span>
+                                    <h4 style="color: #333; margin: 0; font-size: 16px;">Workout Benefits Analysis</h4>
+                                </div>
+                                <div class="recommendation-content" id="workoutRecommendations" style="color: #333;">
+                                    <!-- Workout benefits will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Heart Rate Zones -->
+                            <div class="focused-recommendation-card" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+                                <div class="recommendation-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-size: 24px; margin-right: 12px;">❤️</span>
+                                    <h4 style="color: #333; margin: 0; font-size: 16px;">Personalized Heart Rate Zones</h4>
+                                </div>
+                                <div class="recommendation-content" id="heartRateRecommendations" style="color: #333;">
+                                    <!-- Heart rate zones will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Initial welcome state -->
+                        <div class="ai-welcome-state" id="welcomeState">
+                            <div class="ai-welcome-header">
+                                <span class="ai-brain-icon">🎯</span>
+                                <h3>Focused Fitness Recommendations</h3>
+                            </div>
+                            <div class="ai-welcome-description">
+                                Get personalized recommendations for hydration, nutrition, workout benefits, and heart rate zones
+                            </div>
+                            <div class="ai-features-grid">
+                                <div class="ai-feature">
+                                    <span class="feature-icon">�</span>
+                                    <span class="feature-text">Specific Hydration</span>
+                                </div>
+                                <div class="ai-feature">
+                                    <span class="feature-icon">�</span>
+                                    <span class="feature-text">Personalized Nutrition</span>
+                                </div>
+                                <div class="ai-feature">
+                                    <span class="feature-icon">🎯</span>
+                                    <span class="feature-text">Workout Benefits</span>
+                                </div>
+                                <div class="ai-feature">
+                                    <span class="feature-icon">❤️</span>
+                                    <span class="feature-text">Heart Rate Zones</span>
+                                </div>
+                            </div>
+                            <div class="ai-cta">
+                                Click "Analyze My Workout" to get your focused recommendations
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- 3.1 Show specific data based on dataset -->
+                <!-- 3.2 Show specific data based on dataset -->
                 <div class="card">
                     <div class="card-header">
                         <span class="card-icon">📊</span>
-                        <span class="card-title">3.1 Show specific data based on dataset</span>
+                        <span class="card-title">3.2 Show specific data based on dataset</span>
                     </div>
                     
                     <!-- Daily Calorie Breakdown -->
@@ -3082,41 +2825,9 @@
                     </div>
                 </div>
 
-                <!-- SECTION 3.2: SMART RECOMMENDATIONS -->
-                <div id="section32Container">
-                    <!-- Section 3.2 will be populated by the recommendation UI -->
-                </div>
-
-                <!-- SECTION 3.3: AI-POWERED DIET & WORKOUT RECOMMENDATIONS -->
-                <div id="section33Container" class="section-container">
-                    <div class="section-header">
-                        <h2 style="color: black; font-size: 1.8rem; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 3px solid #60c4de; padding-bottom: 10px;">
-                            Section 3.3: AI-Powered Diet & Workout Recommendations
-                        </h2>
-                    </div>
-
-                    <!-- AI-Powered Description Card -->
-                    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 24px;">
-                        <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
-                            <span class="card-icon">🤖</span>
-                            <span class="card-title" style="color: white;">Advanced AI-Powered Recommendations</span>
-                        </div>
-                        <div class="card-content">
-                            <p style="color: rgba(255,255,255,0.95); font-size: 1.0rem; line-height: 1.6; margin: 0;">
-                                Personalized diet and workout guidance powered by <strong>LLaMA 3-8B with LoRA adaptation</strong>, trained on comprehensive fitness and nutrition datasets. Get ultra-specific, actionable recommendations tailored to your exact profile and goals.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div id="aiRecommendationCards" class="ai-recommendation-cards-grid" style="display: none;">
-                        <!-- AI Recommendation cards will be populated here -->
-                    </div>
-                    
-                    <div class="ai-recommendation-footer" style="text-align: center; margin-top: 30px; padding: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%); border-radius: 12px; display: none; border: 1px solid rgba(102, 126, 234, 0.15);">
-                        <p style="color: #4a5568; font-size: 1.0rem; margin: 0; line-height: 1.5; font-weight: 500;">
-                            🤖 <strong>AI Analysis Complete</strong> - Personalized recommendations generated using advanced machine learning models
-                        </p>
-                    </div>
+                <!-- SECTION 3.3: SMART RECOMMENDATIONS -->
+                <div id="section33Container">
+                    <!-- Section 3.3 will be populated by the recommendation UI -->
                 </div>
             </div>
         </div>
@@ -6535,13 +6246,13 @@
                 // Save current workout to history
                 saveWorkoutData(currentWorkoutData);
                 
-                // === SECTION 3.2: GENERATE SMART RECOMMENDATIONS ===
+                // === SECTION 3.3: GENERATE SMART RECOMMENDATIONS ===
                 setTimeout(() => {
                     try {
-                        // Initialize Section 3.2 HTML structure
-                        const section32Container = document.getElementById('section32Container');
-                        if (section32Container && recommendationUI) {
-                            section32Container.innerHTML = recommendationUI.generateRecommendationSection();
+                        // Initialize Section 3.3 HTML structure
+                        const section33Container = document.getElementById('section33Container');
+                        if (section33Container && recommendationUI) {
+                            section33Container.innerHTML = recommendationUI.generateRecommendationSection();
                             
                             // Prepare user data for recommendation engine
                             const recommendationUserData = {
@@ -6561,48 +6272,14 @@
                             // Generate and display recommendations
                             recommendationUI.displayRecommendations(recommendationUserData);
                             
-                            console.log('✅ Section 3.2 Smart Recommendations displayed successfully!');
+                            console.log('✅ Section 3.3 Smart Recommendations displayed successfully!');
                         } else {
-                            console.warn('⚠️ Section 3.2 container or recommendationUI not found');
+                            console.warn('⚠️ Section 3.3 container or recommendationUI not found');
                         }
                     } catch (error) {
-                        console.error('❌ Error displaying Section 3.2 recommendations:', error);
+                        console.error('❌ Error displaying Section 3.3 recommendations:', error);
                     }
                 }, 500); // Small delay to ensure DOM is ready
-
-                // Initialize and display Section 3.3 AI-Powered Recommendations
-                setTimeout(() => {
-                    try {
-                        // Get additional form data for AI recommendations
-                        const heartRate = parseInt(document.getElementById('heartRate').value) || 120;
-                        const moodBefore = document.getElementById('moodBefore').value || 'neutral';
-                        
-                        // Calculate experience level based on user inputs (estimate)
-                        const estimatedExperience = getEstimatedExperience(age, heartRate, intensity, duration);
-                        const targetHeartRate = Math.round((220 - age) * 0.85); // 85% max HR target
-                        
-                        displaySection33AIRecommendations({
-                            age: age,
-                            weight: weight,
-                            height: height,
-                            gender: gender,
-                            workoutType: workoutType,
-                            duration: duration,
-                            intensity: intensity,
-                            activityLevel: activityLevel,
-                            sleepHours: sleepHours,
-                            heartRate: heartRate,
-                            moodBefore: moodBefore,
-                            experience: estimatedExperience,
-                            targetHeartRate: targetHeartRate,
-                            caloriesBurned: calorieResult.calories,
-                            workoutEfficiency: efficiency
-                        });
-                        console.log('🤖 Section 3.3 AI-Powered Recommendations displayed successfully!');
-                    } catch (error) {
-                        console.error('❌ Error displaying Section 3.3 AI recommendations:', error);
-                    }
-                }, 800); // Slightly delayed after Section 3.2
                 
                 // Generate AI recommendations after results are displayed (only if smart recommendations weren't already shown)
                 setTimeout(() => {
@@ -6788,153 +6465,67 @@
         }
 
         function calculateSummaryIndex(currentData, historicalData, dbStats, inputs) {
-            const { age, gender, workoutType, intensity } = inputs;
-            const { calories, caloriesPerMin, efficiency } = currentData;
+            // Calculate overall score based on multiple factors (out of 10)
+            const caloriePerformance = Math.min((currentData.calories / dbStats.avgCalories) * 5, 10);
+            const efficiencyScore = Math.min((currentData.caloriesPerMin / dbStats.avgCaloriesPerMin) * 5, 10);
+            const consistencyScore = parseFloat(historicalData.consistency);
+            const improvementScore = historicalData.trend.includes('+') ? 
+                parseFloat(historicalData.trend.match(/\d+/)[0]) / 2 : 0;
             
-            // Calculate realistic expected calories for this user profile
-            const expectedCalories = getExpectedCaloriesBenchmark(age, gender, 
-                parseFloat(document.getElementById('weight').value) || 70, 
-                workoutType, 
-                parseInt(document.getElementById('duration').value) || 30, 
-                intensity);
+            const overallScore = ((caloriePerformance + efficiencyScore + consistencyScore + improvementScore) / 4);
             
-            // 1. CALORIE EFFICIENCY SCORE (0-4 points)
-            const calorieRatio = calories / expectedCalories;
-            let calorieScore = 0;
-            if (calorieRatio >= 1.2) calorieScore = 4;      // 120%+ = excellent
-            else if (calorieRatio >= 1.0) calorieScore = 3;  // 100-119% = good  
-            else if (calorieRatio >= 0.8) calorieScore = 2;  // 80-99% = fair
-            else if (calorieRatio >= 0.6) calorieScore = 1;  // 60-79% = needs work
-            else calorieScore = 0;                           // <60% = poor
+            // Performance Index (percentage)
+            const performanceIndex = Math.min(Math.round((currentData.calories / dbStats.avgCalories) * 100), 150);
             
-            // 2. HEART RATE PERFORMANCE SCORE (0-3 points)
-            const heartRate = parseInt(document.getElementById('heartRate').value) || 120;
-            const maxHR = 220 - age;
-            const hrPercentage = (heartRate / maxHR) * 100;
-            let hrScore = 0;
-            if (hrPercentage >= 75 && hrPercentage <= 90) hrScore = 3;      // Optimal zone
-            else if (hrPercentage >= 65 && hrPercentage < 95) hrScore = 2;  // Good zone
-            else if (hrPercentage >= 55 && hrPercentage < 100) hrScore = 1; // Fair zone
-            else hrScore = 0;                                               // Sub-optimal
+            // Progress status based on trends
+            const progressTrends = ['+18%', '+15%', '+12%', '+8%', '+6%', 'stable', '-3%'];
+            const monthlyProgress = progressTrends[Math.floor(Math.random() * progressTrends.length)];
             
-            // 3. DURATION COMPLETION SCORE (0-3 points)
-            const duration = parseInt(document.getElementById('duration').value) || 30;
-            const minRecommended = getMinRecommendedDuration(workoutType, age);
-            let durationScore = 0;
-            if (duration >= minRecommended * 1.5) durationScore = 3;        // 150%+ recommended
-            else if (duration >= minRecommended) durationScore = 2;         // Met recommended
-            else if (duration >= minRecommended * 0.75) durationScore = 1;  // 75% of recommended
-            else durationScore = 0;                                         // Below recommended
+            // Determine progress status and description
+            let progressStatus, progressDescription, progressColor;
+            const progressValue = parseInt(monthlyProgress) || 0;
             
-            // CALCULATE OVERALL SCORE (0-10 scale)
-            const rawScore = calorieScore + hrScore + durationScore;
-            const overallScore = Math.min((rawScore / 10) * 10, 10);
-            
-            // PERFORMANCE INDEX (realistic percentage)
-            const performanceIndex = Math.round(Math.min(calorieRatio * 100, 150)); // Cap at 150%
-            
-            // CONSISTENCY RATING (realistic for new users)
-            let consistencyRating, consistencyTrend;
-            const workoutCount = getWorkoutCount(); // Check if user has workout history
-            
-            if (workoutCount === 0) {
-                consistencyRating = "Building";
-                consistencyTrend = "🌟 First workout!";
-            } else if (workoutCount < 5) {
-                consistencyRating = "Establishing";
-                consistencyTrend = `📈 ${workoutCount} workouts logged`;
+            if (progressValue >= 15) {
+                progressStatus = '🚀';
+                progressDescription = 'Excellent Progress';
+                progressColor = '#4CAF50';
+            } else if (progressValue >= 8) {
+                progressStatus = '⬆️';
+                progressDescription = 'Improving';
+                progressColor = '#8BC34A';
+            } else if (progressValue >= 0) {
+                progressStatus = '📊';
+                progressDescription = 'Stable';
+                progressColor = '#FFC107';
             } else {
-                // For users with workout history, calculate real consistency
-                const weeklyWorkouts = Math.min(workoutCount / 4, 5); // Assume 4 weeks max history
-                consistencyRating = (weeklyWorkouts * 2).toFixed(1); // 0-10 scale
-                consistencyTrend = weeklyWorkouts >= 3 ? '📊 Good routine' : 
-                                 weeklyWorkouts >= 2 ? '📊 Building habit' : '📈 Getting started';
+                progressStatus = '⬇️';
+                progressDescription = 'Needs Focus';
+                progressColor = '#FF9800';
             }
             
-            // PROGRESS STATUS (realistic)
-            let progressStatus, progressDescription;
-            if (workoutCount === 0) {
-                progressStatus = 'Starting Journey';
-                progressDescription = 'Welcome! Building your baseline data';
-            } else if (overallScore >= 7) {
-                progressStatus = 'Strong Performance';
-                progressDescription = 'Exceeding fitness targets';
-            } else if (overallScore >= 5) {
-                progressStatus = 'Making Progress';
-                progressDescription = 'On track with fitness goals';
-            } else if (overallScore >= 3) {
-                progressStatus = 'Building Foundation';
-                progressDescription = 'Establishing good exercise habits';
-            } else {
-                progressStatus = 'Getting Started';
-                progressDescription = 'Every workout counts - keep going!';
-            }
+            // Consistency trend
+            const consistencyTrend = consistencyScore >= 8.5 ? '📊 Excellent' : 
+                                  consistencyScore >= 7.5 ? '📊 Good' : '📊 Improving';
             
-            // MONTHLY PROGRESS (realistic for new users)
-            let monthlyProgress;
-            if (workoutCount < 4) {
-                monthlyProgress = "Insufficient Data";
-            } else {
-                // Calculate realistic monthly improvement
-                const monthlyImprovement = Math.max(0, (workoutCount - 1) * 2.5); // 2.5% per workout
-                monthlyProgress = `+${Math.min(monthlyImprovement, 15).toFixed(1)}%`; // Cap at 15%
-            }
-            
-            // TREND INDICATORS
-            const overallTrend = workoutCount === 0 ? '🌟 Starting journey' :
-                               workoutCount < 3 ? '📈 Building momentum' :
-                               overallScore >= 6 ? '🚀 Great progress' : '💪 Keep improving';
-                               
-            const perfTrendIndicator = performanceIndex >= 110 ? '🚀 Excellent' :
-                                     performanceIndex >= 90 ? '🔥 Good' :
-                                     performanceIndex >= 70 ? '💪 Fair' : '📈 Building';
+            // Performance trend indicator
+            const perfTrendIndicator = performanceIndex >= 120 ? '🚀 Excellent' :
+                                     performanceIndex >= 100 ? '🔥 Good' :
+                                     performanceIndex >= 80 ? '💪 Average' : '📈 Building';
             
             return {
                 overallScore: overallScore.toFixed(1),
                 performanceIndex: performanceIndex + '%',
-                consistencyRating: consistencyRating,
+                consistencyRating: consistencyScore,
                 progressStatus: progressStatus,
                 progressDescription: progressDescription,
-                overallTrend: overallTrend,
+                overallTrend: progressValue > 0 ? `📈 +${Math.abs(progressValue/10).toFixed(1)} vs last week` : 
+                             progressValue < 0 ? `📉 ${progressValue/10} vs last week` : '📊 Stable',
                 consistencyTrend: consistencyTrend,
                 performanceTrendIndicator: perfTrendIndicator,
                 monthlyProgress: monthlyProgress,
-                progressBarWidth: Math.max((overallScore / 10) * 100, 10),
-                progressBarColor: overallScore >= 7 ? '#4CAF50' : 
-                                overallScore >= 5 ? '#2196F3' : 
-                                overallScore >= 3 ? '#FF9800' : '#607D8B'
+                progressBarWidth: Math.max(Math.min((progressValue + 20) * 2, 100), 10), // 10-100%
+                progressBarColor: progressColor
             };
-        }
-        
-        // Helper functions for realistic calculations
-        function getMinRecommendedDuration(workoutType, age) {
-            const baseDurations = {
-                'Running': 20, 'Cycling': 25, 'Swimming': 20,
-                'Boxing': 15, 'Weightlifting': 30, 'Walking': 30, 'Yoga': 45
-            };
-            const ageFactor = age > 50 ? 0.85 : age < 30 ? 1.15 : 1.0;
-            return (baseDurations[workoutType] || 25) * ageFactor;
-        }
-        
-        function getWorkoutCount() {
-            // Simple simulation of workout history - in real app this would check localStorage/database
-            const lastWorkout = localStorage.getItem('lastWorkoutDate');
-            if (!lastWorkout) {
-                // Track current workout
-                localStorage.setItem('lastWorkoutDate', Date.now().toString());
-                localStorage.setItem('workoutCount', '1');
-                return 0; // First workout
-            }
-            
-            const daysSinceLastWorkout = (Date.now() - parseInt(lastWorkout)) / (1000 * 60 * 60 * 24);
-            if (daysSinceLastWorkout > 14) return Math.floor(Math.random() * 3); // Simulate returning user
-            
-            // Increment workout count for current session
-            const currentCount = parseInt(localStorage.getItem('workoutCount') || '0');
-            localStorage.setItem('workoutCount', (currentCount + 1).toString());
-            localStorage.setItem('lastWorkoutDate', Date.now().toString());
-            
-            return currentCount;
         }
 
         function updateSummaryIndex(summaryData) {
@@ -8612,587 +8203,6 @@
                 </div>
             `;
         }
-
-        // ========================
-        // SECTION 3.3: AI-POWERED RECOMMENDATION SYSTEM
-        // ========================
-
-        // Advanced AI Recommendation Categories
-        const aiRecommendationCategories = [
-            {
-                id: 'diet',
-                title: '🍎 Personalized Diet Plan',
-                subtitle: 'LLaMA 3-8B powered nutrition analysis',
-                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                icon: '🍎'
-            },
-            {
-                id: 'workout',
-                title: '🏋️‍♂️ Advanced Workout Programming',
-                subtitle: 'Progressive overload with AI optimization',
-                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                icon: '🏋️‍♂️'
-            },
-            {
-                id: 'recovery',
-                title: '😴 Sleep & Recovery Optimization',
-                subtitle: 'Personalized recovery protocols',
-                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                icon: '😴'
-            },
-            {
-                id: 'supplements',
-                title: '💊 Supplement Recommendations',
-                subtitle: 'Evidence-based supplementation',
-                gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                icon: '💊'
-            },
-            {
-                id: 'tracking',
-                title: '📊 Progress Tracking Guidelines',
-                subtitle: 'Metrics that matter for your goals',
-                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                icon: '📊'
-            },
-            {
-                id: 'lifestyle',
-                title: '🎯 Lifestyle Integration',
-                subtitle: 'Sustainable long-term strategies',
-                gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-                icon: '🎯'
-            }
-        ];
-
-        // Advanced AI Recommendation Engine
-        function generateAdvancedAIRecommendations(userData) {
-            const { age, weight, height, gender, workoutType, duration, intensity, activityLevel, sleepHours, experience, caloriesBurned, workoutEfficiency, heartRate, moodBefore, targetHeartRate } = userData;
-            
-            // Calculate comprehensive metrics
-            const bmr = calculateBMR(weight, height, age, gender);
-            const bmi = (weight / ((height/100) ** 2)).toFixed(1);
-            const proteinNeeds = Math.round(weight * 2.2); // 2.2g per kg for active individuals
-            const calorieNeeds = Math.round(bmr * getActivityMultiplier(activityLevel));
-            const maxHR = 220 - age;
-            const restingHR = Math.max(60, heartRate - 50); // Estimate resting HR
-            
-            // Calculate detailed macros
-            const carbNeeds = Math.round(weight * (workoutType === 'Strength Training' ? 6 : 5));
-            const fatNeeds = Math.round(weight * 1.2);
-            const waterNeeds = Math.round(weight * 35);
-            
-            const recommendations = {};
-
-            // 🍎 PERSONALIZED DIET PLAN - Ultra Specific
-            recommendations.diet = [
-                {
-                    text: `Daily calorie target: ${calorieNeeds} calories. Breakfast (7:00 AM): 3 whole eggs + 2 egg whites + 1 cup oatmeal + 1 banana (650 cal, 35g protein). Pre-workout (${duration >= 60 ? '2 hours' : '90 minutes'} before): 1 apple + 15g almonds + 250ml water (180 cal).`,
-                    detail: `Macros: ${proteinNeeds}g protein (${Math.round(proteinNeeds*4/calorieNeeds*100)}%), ${carbNeeds}g carbs (${Math.round(carbNeeds*4/calorieNeeds*100)}%), ${fatNeeds}g fats (${Math.round(fatNeeds*9/calorieNeeds*100)}%)`
-                },
-                {
-                    text: `Post-workout nutrition (within 15 minutes): 30g whey protein + 400ml ${workoutType === 'Strength Training' ? 'chocolate milk' : 'coconut water'} (${workoutType === 'Strength Training' ? '320' : '280'} cal). Follow with full meal at ${duration >= 60 ? '90' : '60'} minutes post-workout.`,
-                    detail: `Hydration protocol: ${waterNeeds}ml daily base + ${Math.round(duration * 8)}ml during workout + 500ml per hour of intense training`
-                },
-                {
-                    text: `Meal timing for ${gender}, ${age}yo: Lunch (1:00 PM): 200g ${workoutType === 'Strength Training' ? 'chicken breast' : 'salmon'} + 150g ${workoutType === 'Running' ? 'sweet potato' : 'brown rice'} + vegetables (680 cal). Dinner (7:00 PM): 150g lean protein + 100g quinoa + salad (520 cal).`,
-                    detail: `Weekly prep: Cook 1.4kg protein Sunday, prep ${Math.round(carbNeeds*7/1000*100)/100}kg carbs Wednesday. Target 12-hour overnight fast for optimal hormone production.`
-                },
-                {
-                    text: `Snack strategy: Mid-morning (10:00 AM): Greek yogurt + berries (180 cal). Post-dinner (if needed): Casein protein or cottage cheese (120 cal) for overnight muscle recovery during ${sleepHours} hours of sleep.`,
-                    detail: `Weekly shopping: ${Math.round(proteinNeeds*7/1000*100)/100}kg protein sources, ${Math.round((carbNeeds+50)*7/1000*100)/100}kg complex carbs, 2L milk, 500g nuts/seeds`
-                }
-            ];
-
-            // 🏋️‍♂️ ADVANCED WORKOUT PROGRAMMING - Ultra Specific
-            const getCurrentWeeklyVolume = () => {
-                if (workoutType === 'Strength Training') return experience === 'Beginner' ? 12 : experience === 'Intermediate' ? 16 : 20;
-                return experience === 'Beginner' ? 150 : experience === 'Intermediate' ? 200 : 250; // minutes per week
-            };
-            
-            recommendations.workout = [
-                {
-                    text: `${workoutType} Protocol: ${experience === 'Beginner' ? '3 days/week' : experience === 'Intermediate' ? '4-5 days/week' : '5-6 days/week'}. ${workoutType === 'Strength Training' ? 
-                        `Monday: Squats 4×8-10 at ${experience === 'Beginner' ? '70-75%' : '75-80%'} 1RM, Bench Press 4×8-10, Bent Rows 3×10-12` : 
-                        `Week 1-2: ${duration}min at ${Math.round(targetHeartRate * 0.75)}-${Math.round(targetHeartRate * 0.85)} BPM`}. Rest: ${workoutType === 'Strength Training' ? '2-3 minutes between sets' : '30sec high/90sec recovery intervals'}.`,
-                    detail: `Progressive overload: ${workoutType === 'Strength Training' ? 
-                        `Add ${experience === 'Beginner' ? '2.5kg' : '1.25kg'} weekly to compounds, ${experience === 'Beginner' ? '1.25kg' : '0.5kg'} to isolation` : 
-                        `Week 3-4: Add ${Math.round(duration * 0.15)} minutes OR increase intensity by 5 BPM`}`
-                },
-                {
-                    text: `Weekly structure for ${age}yo ${gender}: ${workoutType === 'Strength Training' ? 
-                        `Push/Pull/Legs split. Push: Chest/Shoulders/Triceps (45-60min), Pull: Back/Biceps (40-50min), Legs: Quads/Glutes/Hamstrings (50-65min)` : 
-                        `Base training: ${Math.round(duration * 0.8)}min easy pace, Tempo: ${Math.round(duration * 0.6)}min at ${Math.round(targetHeartRate * 0.88)} BPM, Intervals: ${Math.round(duration/6)} × 3min at ${Math.round(targetHeartRate * 0.95)} BPM`}.`,
-                    detail: `Current weekly volume: ${getCurrentWeeklyVolume()} ${workoutType === 'Strength Training' ? 'working sets' : 'minutes'}. Target next month: ${Math.round(getCurrentWeeklyVolume() * 1.15)} ${workoutType === 'Strength Training' ? 'sets' : 'minutes'}`
-                },
-                {
-                    text: `Recovery protocol: ${48 + (age > 40 ? 24 : 0)}h between same muscle groups. Active recovery: 20-30min walk at ${Math.round(maxHR * 0.6)} BPM on rest days. Sleep requirement: ${7.5 + (intensity === 'High' ? 0.5 : 0)} hours minimum for adaptation.`,
-                    detail: `Deload week 4: Reduce volume by 40% (${Math.round(getCurrentWeeklyVolume() * 0.6)} ${workoutType === 'Strength Training' ? 'sets' : 'minutes'}), maintain intensity. HRV target: >30ms for training readiness`
-                },
-                {
-                    text: `Performance targets (4 weeks): ${workoutType === 'Strength Training' ? 
-                        `Strength gains: ${experience === 'Beginner' ? '15-25%' : experience === 'Intermediate' ? '5-10%' : '2-5%'}. Estimated 1RM progression: Squat +${Math.round(weight * 0.15)}kg, Bench +${Math.round(weight * 0.1)}kg, Deadlift +${Math.round(weight * 0.2)}kg` : 
-                        `Endurance gains: ${Math.round(duration * 1.2)}min same pace OR same duration at +${Math.round(targetHeartRate * 0.05)} BPM. VO2Max improvement: +${experience === 'Beginner' ? '8-12%' : '3-5%'}`}.`,
-                    detail: `Monthly testing: ${workoutType === 'Strength Training' ? 
-                        '1RM test compounds, body measurements (chest, arms, legs)' : 
-                        'Time trial at target distance, resting heart rate measurement'}. Plateau protocol: Change stimulus after 2 weeks no progress`
-                }
-            ];
-
-            // 😴 SLEEP & RECOVERY OPTIMIZATION - Ultra Specific
-            const optimalSleep = 7.5 + (intensity === 'High' ? 0.5 : 0) + (age > 50 ? -0.5 : 0);
-            const bedtime = sleepHours < 7 ? '9:30 PM' : sleepHours < 8 ? '10:00 PM' : '10:30 PM';
-            const wakeTime = sleepHours < 7 ? '6:00 AM' : sleepHours < 8 ? '6:30 AM' : '7:00 AM';
-            
-            recommendations.recovery = [
-                {
-                    text: `Sleep protocol for ${age}yo ${gender}: Target ${optimalSleep} hours (currently ${sleepHours}h = ${sleepHours >= optimalSleep ? 'optimal' : Math.round((optimalSleep - sleepHours) * 60) + 'min deficit'}). Bedtime: ${bedtime}, Wake: ${wakeTime}. Room temp: 18-20°C, blackout curtains, no screens 1h before bed.`,
-                    detail: `Sleep debt recovery: ${sleepHours < 7 ? 'Add 15min/week until reaching target' : 'Maintain current schedule'}. Weekend variance: max ±30min from weekday schedule for circadian stability`
-                },
-                {
-                    text: `Post-workout recovery: ${workoutType === 'Strength Training' ? '10-15min cold shower (15°C) OR ice bath 3min' : '5-10min cool-down walk at ' + Math.round(maxHR * 0.5) + ' BPM'}. Protein within 2h, carbs within 30min of high-intensity sessions. Massage/foam rolling: ${duration >= 60 ? '15min' : '10min'} focusing on worked muscles.`,
-                    detail: `Active recovery days: 20-30min Zone 1 cardio (${Math.round(maxHR * 0.6)}-${Math.round(maxHR * 0.7)} BPM), 10min mobility work, 5min meditation. Schedule 2-3 days/week between training`
-                },
-                {
-                    text: `Stress & HRV monitoring: Morning HRV >30ms = train normally, 25-30ms = reduce intensity 20%, <25ms = active recovery only. ${moodBefore === 'low' || moodBefore === 'very_low' ? 'Current mood suggests elevated stress - prioritize sleep and reduce training intensity 15% this week' : 'Good mood indicates readiness for planned training'}.`,
-                    detail: `Stress reduction: 10min meditation daily (try Headspace), 2-3 deep breathing sessions (4-7-8 technique), limit caffeine after 2pm, minimize alcohol especially on training days`
-                },
-                {
-                    text: `Recovery nutrition timing: Magnesium glycinate 400mg with dinner for muscle relaxation and better sleep. Tart cherry juice 240ml 2h before bed (natural melatonin). Post-training: 20g BCAA + 500ml coconut water for electrolyte replacement.`,
-                    detail: `Inflammation control: Omega-3 fish oil 2-3g daily, turmeric 500mg with black pepper, zinc 15mg before bed. Monitor morning resting HR - elevation >5 BPM indicates incomplete recovery`
-                }
-            ];
-
-            // 💊 SUPPLEMENT RECOMMENDATIONS - Ultra Specific
-            const supplementBudget = experience === 'Beginner' ? 45 : experience === 'Intermediate' ? 65 : 85;
-            
-            recommendations.supplements = [
-                {
-                    text: `Foundation stack ($${Math.round(supplementBudget * 0.6)}/month): Creatine monohydrate 5g daily post-workout with ${workoutType === 'Strength Training' ? 'dextrose 20g' : 'banana'}. Vitamin D3 ${age > 50 || gender === 'Female' ? '4000IU' : '2000IU'} with breakfast. ${gender === 'Female' ? 'Iron 18mg if deficient (test ferritin first)' : 'Multivitamin without iron'}.`,
-                    detail: `Brands: Creapure creatine (German), NOW Foods Vitamin D3, ${gender === 'Female' ? 'Thorne Iron Bisglycinate' : 'Orange Triad multivitamin'}. Take consistently for 8+ weeks for full effect`
-                },
-                {
-                    text: `Pre-workout protocol (30min before): ${intensity === 'High' ? 'Caffeine 200mg (sensitive users 100mg) + L-Citrulline 6g + Beta-alanine 3g' : 'Green tea extract 400mg + Beetroot juice 500ml'}. ${experience === 'Advanced' ? 'Add Rhodiola 300mg for stress adaptation' : 'Start simple, add complexity later'}.`,
-                    detail: `Timing: No caffeine after 2pm (affects sleep), cycle off every 6-8 weeks. Cost: $${Math.round(supplementBudget * 0.25)}/month. Alternative: Strong coffee + citrulline powder for budget option`
-                },
-                {
-                    text: `Recovery & sleep optimization: Magnesium glycinate ${age > 40 ? '400mg' : '300mg'} with dinner (better absorption than oxide). ${sleepHours < 7 ? 'Melatonin 0.5-1mg 1h before bed (start low)' : 'Natural sleep sufficient'}. ZMA (zinc + magnesium + B6) if night sweats or poor recovery.`,
-                    detail: `Post-workout within 2h: Whey protein 25-30g OR plant protein 35g if vegan. BCAA/EAA only if training fasted or plant-based diet. Glutamine 10g if overtraining symptoms`
-                },
-                {
-                    text: `Performance enhancers (${experience === 'Advanced' ? 'recommended' : 'optional'}): Omega-3 fish oil 2-3g EPA/DHA daily with meals. Curcumin 500mg with black pepper for inflammation. ${age > 35 ? 'CoQ10 100mg for cellular energy' : ''}. HMB 3g if cutting calories while training.`,
-                    detail: `Advanced stack: Creatine HCl if bloating, Citrulline malate 2:1 ratio, Agmatine 1g pre-workout. Total monthly cost: $${supplementBudget}. Get blood work every 6 months to optimize dosing`
-                }
-            ];
-
-            // 📊 PROGRESS TRACKING GUIDELINES - Ultra Specific
-            const weeklyMeasurement = workoutType === 'Strength Training' ? 'lift numbers' : 'time/distance';
-            const monthlyTarget = workoutType === 'Strength Training' ? 
-                `+${experience === 'Beginner' ? '15-20%' : experience === 'Intermediate' ? '5-8%' : '2-4%'} strength` : 
-                `+${experience === 'Beginner' ? '20-30sec' : '10-15sec'} speed OR +${Math.round(duration * 0.2)}min endurance`;
-            
-            recommendations.tracking = [
-                {
-                    text: `Weekly tracking (same day/time): ${workoutType === 'Strength Training' ? 
-                        'Monday AM: Body weight, Wednesday PM: Primary lift performance, Friday AM: Body measurements (chest, arms, waist)' : 
-                        'Tuesday AM: Resting HR + body weight, Thursday: Performance test (same distance/time), Sunday: Flexibility assessment'}. Log in smartphone app or journal.`,
-                    detail: `Performance benchmarks: ${workoutType === 'Strength Training' ? 
-                        'Squat/Bench/Deadlift 1RM tests monthly, volume PRs weekly' : 
-                        `${Math.round(duration * 0.8)}min time trial every 2 weeks, VO2max estimation monthly`}. Progress photos: same lighting/pose every Sunday AM`
-                },
-                {
-                    text: `Monthly assessment (1st of month): Body composition via DEXA/BodPod OR BIA scale same conditions. Measure: ${gender === 'Female' ? 'chest, waist, hips, thighs, arms' : 'chest, waist, arms, thighs'}. Performance: ${workoutType === 'Strength Training' ? '1RM testing' : 'VO2max field test'}. Blood markers if >35yo: lipids, glucose, inflammation.`,
-                    detail: `Target monthly gains: ${monthlyTarget}. Body weight change: ${gender === 'Female' && age < 40 ? '±1-2 lbs' : '±2-3 lbs'} normal fluctuation. Fat loss: 1-2 lbs/month sustainable`
-                },
-                {
-                    text: `Data analysis & adjustments: No progress 2+ weeks = increase volume 15% OR intensity 10%. Declining performance = deload week (40% volume). Sleep <7h for 3+ days = mandatory rest day. Morning HR +10 BPM = overtraining indicator.`,
-                    detail: `Plateau breakers: ${workoutType === 'Strength Training' ? 
-                        'Change rep ranges, add pause reps, switch exercises' : 
-                        'Add intervals, change terrain, cross-train different modality'}. Reassess goals quarterly, major program changes bi-annually`
-                },
-                {
-                    text: `Technology tools: Fitness tracker for sleep/HRV (Whoop, Oura Ring), lifting app (Strong, Jefit), nutrition (MyFitnessPal), progress photos (mirror selfies weekly). Backup: paper log in case tech fails. Review weekly trends, not daily fluctuations.`,
-                    detail: `Key ratios to track: ${workoutType === 'Strength Training' ? 
-                        'Squat:Bench 1.5:1, Deadlift:Squat 1.2:1, body weight ratios' : 
-                        'Resting HR trend, pace improvements, recovery between sessions'}. Celebrate small wins, focus on consistency over perfection`
-                }
-            ];
-
-            // 🎯 LIFESTYLE INTEGRATION - Ultra Specific
-            const weeklyTimeCommitment = (duration / 60) * (experience === 'Beginner' ? 3 : experience === 'Intermediate' ? 4.5 : 6) + 2; // training + prep
-            const mealPrepBudget = Math.round(proteinNeeds * 7 * 0.03 + 40); // protein cost + other foods
-            
-            recommendations.lifestyle = [
-                {
-                    text: `Time management for ${age}yo lifestyle: Total weekly commitment ${weeklyTimeCommitment.toFixed(1)}h (${Math.round(weeklyTimeCommitment * 60 / 7)}min/day average). Schedule: ${workoutType === 'Strength Training' ? 
-                        'Mon/Wed/Fri 7-8AM OR Tue/Thu/Sat 6-7PM' : 
-                        'Tue/Thu/Sat AM OR Mon/Wed/Fri PM'} + 90min Sunday meal prep + 60min Wednesday prep top-up.`,
-                    detail: `Meal prep efficiency: 2h Sunday = cook ${Math.round(proteinNeeds * 7 / 1000 * 2.2)}lbs chicken/fish, 2 cups rice/oats, chop vegetables. Use slow cooker, sheet pan meals, batch cooking. Budget: $${mealPrepBudget}/week`
-                },
-                {
-                    text: `Social accountability system: ${age < 30 ? 
-                        'Join fitness-focused social media groups, find workout buddy with similar schedule, use fitness apps with friends' : 
-                        age < 50 ? 'Family fitness challenges, neighborhood walking groups, workplace wellness programs' : 
-                        'Senior fitness classes, walking clubs, health-focused community groups'}. Share weekly progress with 1-2 close supporters.`,
-                    detail: `Accountability strategies: Text buddy after each workout, weekly check-in calls, shared fitness tracker challenges, monthly progress photos exchange. Success rate: 95% with buddy vs 65% alone`
-                },
-                {
-                    text: `Travel & disruption protocol: Hotel room workouts (bodyweight circuits 20-30min), portable resistance bands, maintain protein intake with bars/shakes. Minimum effective dose during busy periods: 2x ${duration/2}min sessions/week maintains 80% fitness for 4-6 weeks.`,
-                    detail: `Habit anchoring: Link workouts to existing routines (after coffee, before shower). Emergency backup plan: 15min daily movement minimum. Life happens - 80% consistency over 6 months beats 100% for 6 weeks`
-                },
-                {
-                    text: `Long-term sustainability (5+ year vision): ${experience === 'Beginner' ? 
-                        'Build foundation habits first, add complexity gradually. Focus on enjoying movement, not just results' : 
-                        'Periodize goals annually: strength focus Jan-Apr, endurance May-Aug, maintenance Sep-Dec'}. Plan for aging: emphasize mobility, balance, injury prevention after ${age + 10}.`,
-                    detail: `Motivation cycles: Expect 3-4 motivation dips per year - prepare systems to maintain minimum activity. Long-term: fitness becomes lifestyle, not temporary project. Invest in quality equipment, education, and recovery`
-                }
-            ];
-
-            return recommendations;
-        }
-
-        // Helper functions for AI recommendations
-        function calculateBMR(weight, height, age, gender) {
-            if (gender === 'Male') {
-                return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
-            } else {
-                return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
-            }
-        }
-
-        function getEstimatedExperience(age, heartRate, intensity, duration) {
-            // Estimate experience level based on various factors
-            let experienceScore = 0;
-            
-            // Age factor (younger people often less experienced)
-            if (age < 25) experienceScore += 0;
-            else if (age < 35) experienceScore += 1;
-            else if (age < 45) experienceScore += 2;
-            else experienceScore += 1;
-            
-            // Heart rate efficiency (lower HR for same intensity = more experienced)
-            if (heartRate < 120) experienceScore += 2;
-            else if (heartRate < 140) experienceScore += 1;
-            
-            // Duration tolerance (longer workouts = more experienced)
-            if (duration >= 60) experienceScore += 2;
-            else if (duration >= 45) experienceScore += 1;
-            
-            // Intensity handling
-            if (intensity === 'High') experienceScore += 2;
-            else if (intensity === 'Medium') experienceScore += 1;
-            
-            if (experienceScore <= 2) return 'Beginner';
-            if (experienceScore <= 4) return 'Intermediate';
-            return 'Advanced';
-        }
-
-        function getActivityMultiplier(activityLevel) {
-            const multipliers = {
-                'Sedentary': 1.2,
-                'Lightly Active': 1.375,
-                'Moderately Active': 1.55,
-                'Very Active': 1.725,
-                'Extremely Active': 1.9
-            };
-            return multipliers[activityLevel] || 1.55;
-        }
-
-        function getProgressiveOverloadAdvice(workoutType, experience) {
-            if (workoutType === 'Strength Training') {
-                return experience === 'Beginner' ? 
-                    'Increase weight by 2.5-5lbs weekly for compound movements, 1-2.5lbs for isolation' :
-                    'Increase weight by 1-2.5lbs weekly, or add 1-2 reps before increasing weight';
-            } else if (workoutType === 'Cardio') {
-                return 'Increase duration by 5-10% weekly or intensity by 5% every 2 weeks';
-            }
-            return 'Increase training volume by 5-10% weekly through sets, reps, or resistance';
-        }
-
-        function getEstimated1RM(workoutType, experience, weight, gender) {
-            if (workoutType !== 'Strength Training') return 'N/A for cardio focus';
-            
-            const multiplier = gender === 'Male' ? 1.5 : 1.2;
-            const experienceMultiplier = experience === 'Beginner' ? 0.8 : experience === 'Intermediate' ? 1.0 : 1.3;
-            
-            const squat = Math.round(weight * multiplier * 1.5 * experienceMultiplier);
-            const bench = Math.round(weight * multiplier * experienceMultiplier);
-            const deadlift = Math.round(weight * multiplier * 1.8 * experienceMultiplier);
-            
-            return `Squat: ${squat}lbs, Bench: ${bench}lbs, Deadlift: ${deadlift}lbs`;
-        }
-
-        function getTrainingFrequency(workoutType, experience, age) {
-            if (age > 50) return experience === 'Beginner' ? '2-3' : '3-4';
-            if (experience === 'Beginner') return '3';
-            if (experience === 'Intermediate') return '4-5';
-            return '5-6';
-        }
-
-        function getWeeklyVolumeTarget(workoutType, experience) {
-            const baseVolume = workoutType === 'Strength Training' ? 12 : 8;
-            const experienceMultiplier = experience === 'Beginner' ? 1 : experience === 'Intermediate' ? 1.3 : 1.6;
-            return Math.round(baseVolume * experienceMultiplier);
-        }
-
-        function getPeriodizationAdvice(workoutType, experience) {
-            if (experience === 'Beginner') return 'Linear periodization: progressive overload until plateau';
-            if (experience === 'Intermediate') return 'Block periodization: 4-week strength, 4-week hypertrophy cycles';
-            return 'Daily undulating periodization: vary intensity and volume within weeks';
-        }
-
-        function getNextPhaseRecommendation(workoutType, experience) {
-            if (workoutType === 'Strength Training') {
-                return experience === 'Beginner' ? 
-                    'Progress to intermediate programming (Upper/Lower split)' :
-                    'Consider specialization phase or competition prep';
-            }
-            return 'Progress to sport-specific training or increase training complexity';
-        }
-
-        function getOptimalSleepHours(age, intensity) {
-            const baseHours = age < 30 ? 8 : age < 50 ? 7.5 : 7;
-            const intensityBonus = intensity === 'High' ? 0.5 : intensity === 'Moderate' ? 0.25 : 0;
-            return (baseHours + intensityBonus).toFixed(1);
-        }
-
-        function getSleepSchedule(currentSleepHours) {
-            const targetBedtime = currentSleepHours < 7 ? '9:30 PM' : '10:00 PM';
-            const targetWakeTime = currentSleepHours < 7 ? '6:00 AM' : '6:30 AM';
-            return { bedtime: targetBedtime, wakeTime: targetWakeTime };
-        }
-
-        function getActiveRecoveryProtocol(workoutType, intensity) {
-            if (workoutType === 'Strength Training') {
-                return intensity === 'High' ? 
-                    'Light cardio (walking, cycling) + mobility work' :
-                    'Yoga or light swimming';
-            }
-            return 'Mobility work, stretching, or different cardio modality at low intensity';
-        }
-
-        function getStressManagementAdvice(age, intensity) {
-            if (age > 40 || intensity === 'High') {
-                return 'Meditation 10-15 min daily, breathing exercises post-workout';
-            }
-            return 'Weekly stress assessment, journal writing, or relaxation techniques';
-        }
-
-        function getCoreSupplements(age, gender, workoutType) {
-            const base = ['Creatine 5g daily', 'Vitamin D3 2000-4000 IU', 'Multivitamin'];
-            if (gender === 'Female') base.push('Iron (if deficient)');
-            if (age > 40) base.push('Magnesium 400mg');
-            return base.join(', ');
-        }
-
-        function getPreWorkoutSupplements(workoutType, intensity) {
-            if (intensity === 'High') {
-                return 'Caffeine 200mg + Citrulline Malate 6g + Beta-alanine 3g';
-            }
-            return 'Caffeine 100-150mg + light carbohydrates';
-        }
-
-        function getRecoverySupplements(age, intensity, sleepHours) {
-            const recovery = ['Omega-3 fish oil 2-3g'];
-            if (sleepHours < 7) recovery.push('Magnesium Glycinate 400mg before bed');
-            if (age > 35) recovery.push('Vitamin D3, Zinc');
-            if (intensity === 'High') recovery.push('Tart cherry juice or melatonin 0.5-3mg');
-            return recovery.join(', ');
-        }
-
-        function getKeyMetrics(workoutType, age) {
-            const base = ['Body weight', 'Progress photos', 'Energy levels'];
-            if (workoutType === 'Strength Training') {
-                base.push('Lift numbers (squat/bench/deadlift)', 'Body measurements');
-            } else {
-                base.push('Cardio performance times', 'Resting heart rate');
-            }
-            if (age > 40) base.push('HRV', 'Sleep quality scores');
-            return base.join(', ');
-        }
-
-        function getTimelineExpectations(workoutType, experience) {
-            if (experience === 'Beginner') {
-                return 'Strength gains in 2-4 weeks, physique changes in 8-12 weeks';
-            }
-            return 'Slower but steady progress: strength gains 4-8 weeks, physique 12-20 weeks';
-        }
-
-        function getMonthlyTargets(workoutType, experience, gender) {
-            if (workoutType === 'Strength Training') {
-                const strength = experience === 'Beginner' ? '10-20%' : '2-5%';
-                const muscle = gender === 'Male' ? '0.5-1 lbs' : '0.25-0.5 lbs';
-                return `Strength: +${strength}, Muscle gain: ${muscle}`;
-            }
-            return 'Cardio: +10-15% capacity, Fat loss: 1-2 lbs (if in deficit)';
-        }
-
-        function getAdjustmentProtocols(workoutType, experience) {
-            return experience === 'Beginner' ?
-                'Increase volume by 10% or decrease rest between sets by 10 seconds' :
-                'Vary training stimulus: change rep ranges, exercises, or add intensity techniques';
-        }
-
-        function getTimeManagementAdvice(duration, activityLevel) {
-            const trainingTime = duration === 'More than 60 minutes' ? '60-90 minutes' : `${duration}`;
-            return `Workout ${trainingTime} + 30min meal prep twice weekly. Prioritize consistency over duration`;
-        }
-
-        function getWeeklyTimeInvestment(duration, activityLevel) {
-            const workoutHours = duration === 'More than 60 minutes' ? 6 : 4;
-            const prepHours = 1;
-            const recoveryHours = 1;
-            return workoutHours + prepHours + recoveryHours;
-        }
-
-        function getSocialIntegrationAdvice(age, activityLevel) {
-            if (age < 30) return 'Join fitness groups, use social media for accountability';
-            if (age < 50) return 'Workout with family, join adult sports leagues';
-            return 'Walking groups, senior fitness classes, or online communities';
-        }
-
-        function getLongTermSustainabilityAdvice(age, experience) {
-            return age > 50 || experience === 'Advanced' ?
-                'Focus on movement quality and injury prevention over maximum performance' :
-                'Build exercise habits gradually, plan for obstacles, and maintain flexibility in approach';
-        }
-
-        // Display Section 3.3 AI Recommendations
-        function displaySection33AIRecommendations(userData) {
-            const section33Container = document.getElementById('section33Container');
-            const aiRecommendationCards = document.getElementById('aiRecommendationCards');
-            const aiRecommendationFooter = document.querySelector('.ai-recommendation-footer');
-            
-            if (!aiRecommendationCards) return;
-            
-            // Generate AI recommendations
-            const recommendations = generateAdvancedAIRecommendations(userData);
-            
-            // Clear existing content
-            aiRecommendationCards.innerHTML = '';
-            
-            // Generate cards for each category
-            aiRecommendationCategories.forEach((category, index) => {
-                const categoryRecommendations = recommendations[category.id] || [];
-                const cardHTML = generateAIRecommendationCard(category, categoryRecommendations);
-                aiRecommendationCards.innerHTML += cardHTML;
-            });
-            
-            // Show the cards and footer with animation
-            aiRecommendationCards.style.display = 'grid';
-            if (aiRecommendationFooter) {
-                aiRecommendationFooter.style.display = 'block';
-            }
-            
-            // Animate cards appearing
-            setTimeout(() => {
-                const cards = document.querySelectorAll('.ai-recommendation-card');
-                cards.forEach((card, index) => {
-                    card.style.setProperty('--card-gradient', aiRecommendationCategories[index].gradient);
-                    setTimeout(() => {
-                        card.classList.add('loaded');
-                        card.style.animation = `aiCardSlideIn 0.6s ease-out ${index * 0.1}s forwards`;
-                    }, index * 100);
-                });
-            }, 100);
-        }
-
-        // Generate individual AI recommendation card
-        function generateAIRecommendationCard(category, recommendations) {
-            const visibleRecs = recommendations.slice(0, 3); // Show first 3
-            const hasMore = recommendations.length > 3;
-            
-            return `
-            <div class="ai-recommendation-card" style="--card-gradient: ${category.gradient};" data-category="${category.id}">
-                <div class="ai-card-header">
-                    <div class="ai-card-icon">
-                        <span class="icon-emoji">${category.icon}</span>
-                    </div>
-                    <div class="ai-card-title-section">
-                        <h3 class="ai-card-title">${category.title}</h3>
-                        <p class="ai-card-subtitle">${category.subtitle}</p>
-                    </div>
-                </div>
-                
-                <div class="ai-card-content">
-                    <div class="ai-recommendations-visible">
-                        ${visibleRecs.map((rec, index) => `
-                            <div class="ai-recommendation-item" style="--item-color: ${getItemColor(index)};">
-                                <p class="ai-recommendation-text">${rec.text}</p>
-                                ${rec.detail ? `<div class="ai-recommendation-detail">${rec.detail}</div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    ${hasMore ? `
-                    <div class="ai-recommendations-hidden" style="display: none;">
-                        ${recommendations.slice(3).map((rec, index) => `
-                            <div class="ai-recommendation-item" style="--item-color: ${getItemColor(index + 3)};">
-                                <p class="ai-recommendation-text">${rec.text}</p>
-                                ${rec.detail ? `<div class="ai-recommendation-detail">${rec.detail}</div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <button class="ai-show-more-btn" onclick="toggleAIRecommendations('${category.id}')" style="
-                        width: calc(100% - 20px);
-                        padding: 12px 16px;
-                        margin: 15px 10px 10px 10px;
-                        background: ${category.gradient};
-                        color: white;
-                        border: none;
-                        border-radius: 8px;
-                        font-weight: 600;
-                        font-size: 0.95rem;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-                    " onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 3px 10px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 6px rgba(0, 0, 0, 0.15)'">
-                        Show More ▼
-                    </button>
-                    ` : ''}
-                </div>
-                
-                <div class="ai-progress-indicator"></div>
-            </div>
-            `;
-        }
-
-        // Toggle show more/less functionality
-        function toggleAIRecommendations(categoryId) {
-            const card = document.querySelector(`[data-category="${categoryId}"]`);
-            const hiddenSection = card.querySelector('.ai-recommendations-hidden');
-            const button = card.querySelector('.ai-show-more-btn');
-            
-            if (hiddenSection.style.display === 'none') {
-                hiddenSection.style.display = 'block';
-                button.innerHTML = 'Show Less ▲';
-                hiddenSection.style.animation = 'aiCardSlideIn 0.4s ease-out forwards';
-            } else {
-                hiddenSection.style.display = 'none';
-                button.innerHTML = 'Show More ▼';
-            }
-        }
-
-        function getItemColor(index) {
-            const colors = ['#667eea', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#a8edea'];
-            return colors[index % colors.length];
-        }
-
-        // Add animation keyframes
-        const aiAnimationStyle = document.createElement('style');
-        aiAnimationStyle.textContent = `
-            @keyframes aiCardSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px) scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-        `;
-        document.head.appendChild(aiAnimationStyle);
-
     </script>
 
     <!-- Recommendation System Scripts -->
