@@ -1,0 +1,39 @@
+{
+  "name": "fitness-tracker-deployment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deploy_server.js",
+  "scripts": {
+    "start": "node deploy_server.js",
+    "start:multi-db": "node multi_db_server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rezakhaleghi998/workout_analyze.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rezakhaleghi998/workout_analyze/issues"
+  },
+  "homepage": "https://github.com/rezakhaleghi998/workout_analyze#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.4",
+    "pg": "^8.16.3",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

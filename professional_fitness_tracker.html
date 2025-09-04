@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Calorie Predictor v2.1</title>
+    
+    <!-- Database and Authentication System -->
+    <script src="database.js"></script>
+    
+    <!-- Core Application Scripts -->
     <script src="client_focused_engine.js"></script>
+    <!-- User Summary Index System -->
+    <script src="user_summary_index.js"></script>
+    <!-- <script src="summary_index_ui.js"></script> --> <!-- DISABLED: Consolidated into unified system -->
+    <script src="unified_performance_index.js"></script>
+    <!-- Development/Testing (remove in production) -->
+    <script src="summary_index_tester.js"></script>
     <style>
         * {
             margin: 0;
@@ -2021,27 +2032,6 @@
             }
         }
         
-        /* ===== SECTION 3.2 ANIMATION ===== */
-        
-        /* Section 3.2 Container Animation */
-        #section32Container {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: section32FadeInSlide 0.8s ease-out 0.3s forwards;
-        }
-        
-        /* Section 3.2 Smooth Fade-In and Slide-In Animation */
-        @keyframes section32FadeInSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Section 3.3 Container Animation */
         #section33Container {
             opacity: 0;
@@ -2340,12 +2330,463 @@
             }
         }
 
+        /* User Profile Header Styles */
+        .user-profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .user-stats {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: rgba(244, 67, 54, 0.1);
+            color: #d32f2f;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(244, 67, 54, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Efficiency Badge Styles */
+        .efficiency-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .efficiency-badge.excellent {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+        }
+
+        .efficiency-badge.good {
+            background: rgba(33, 150, 243, 0.2);
+            color: #1565C0;
+        }
+
+        .efficiency-badge.average {
+            background: rgba(255, 152, 0, 0.2);
+            color: #E65100;
+        }
+
+        .efficiency-badge.poor {
+            background: rgba(244, 67, 54, 0.2);
+            color: #C62828;
+        }
+
+        /* Profile Management Modal */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-modal.active {
+            display: flex;
+        }
+
+        .profile-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(96, 196, 222, 0.2);
+        }
+
+        .profile-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s ease;
+            margin-left: auto;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .profile-form-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .profile-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .profile-form-group input,
+        .profile-form-group select {
+            padding: 12px;
+            border: 2px solid rgba(96, 196, 222, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .profile-form-group input:focus,
+        .profile-form-group select:focus {
+            outline: none;
+            border-color: #60c4de;
+            box-shadow: 0 0 0 3px rgba(96, 196, 222, 0.1);
+        }
+
+        .profile-save-btn {
+            background: linear-gradient(135deg, #60c4de 0%, #4a9eff 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .profile-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(96, 196, 222, 0.3);
+        }
+
+        /* User Dropdown Menu */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-info {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .user-info:hover {
+            transform: scale(1.05);
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-width: 200px;
+            z-index: 100;
+            margin-top: 8px;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .user-dropdown-item:hover {
+            background: rgba(96, 196, 222, 0.1);
+        }
+
+        .user-dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .user-dropdown-item:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+
+        .user-dropdown-item i {
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        /* Analysis Mode Toggle */
+        .analysis-mode-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .analysis-mode-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .analysis-mode-title i {
+            margin-right: 8px;
+            color: #60c4de;
+        }
+
+        .analysis-mode-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .mode-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid rgba(96, 196, 222, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .mode-option.active {
+            border-color: #60c4de;
+            background: rgba(96, 196, 222, 0.1);
+            color: #2c7a8c;
+        }
+
+        .mode-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(96, 196, 222, 0.2);
+        }
+
+        .guest-analysis-section {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .guest-analysis-section.active {
+            display: block;
+        }
+
+        /* Profile Setup Wizard */
+        .profile-setup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(96, 196, 222, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-setup-overlay.active {
+            display: flex;
+        }
+
+        .profile-setup-wizard {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .wizard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .wizard-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+            font-size: 1.1rem;
+        }
+
+        .wizard-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .wizard-complete-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .wizard-complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- User Profile Header -->
+        <div class="user-profile-header">
+            <div class="user-menu">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Loading...</div>
+                        <div class="user-stats" id="userStats">Member since...</div>
+                    </div>
+                </div>
+                <!-- User Dropdown Menu -->
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="user-dropdown-item" id="editProfileBtn">
+                        👤 Edit Profile
+                    </button>
+                    <button class="user-dropdown-item" id="viewStatsBtn">
+                        📊 View Stats
+                    </button>
+                    <button class="user-dropdown-item" id="exportDataBtn">
+                        📥 Export Data
+                    </button>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+        
         <div class="header">
             <h1>🏋️ Workout Calorie Predictor</h1>
+        </div>
+
+        <!-- Analysis Mode Selection -->
+        <div class="analysis-mode-section">
+            <div class="analysis-mode-title">
+                🎯 Who are we analyzing today?
+            </div>
+            <div class="analysis-mode-toggle">
+                <div class="mode-option active" id="selfMode">
+                    👤 Analyze for Me
+                </div>
+                <div class="mode-option" id="guestMode">
+                    👥 Analyze for Someone Else
+                </div>
+            </div>
+            <div class="guest-analysis-section" id="guestAnalysisSection">
+                <div class="profile-form-grid">
+                    <div class="profile-form-group">
+                        <label for="guestName">Person's Name (optional)</label>
+                        <input type="text" id="guestName" placeholder="Enter name...">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="input-section">
@@ -2443,69 +2884,118 @@
         </div>
 
         <div id="resultsDiv" class="hidden">
+            <!-- TOP CARD: Unified Fitness Performance Index -->
+            <div style="margin-bottom: 32px;">
+                <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 24px; border-radius: 20px; box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3);">
+                    <!-- Header Section -->
+                    <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.2); padding: 24px 24px 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <span class="card-icon" style="font-size: 1.8rem;">🏆</span>
+                                <span class="card-title" style="color: white; font-size: 1.4rem; font-weight: bold;">Fitness Performance Index</span>
+                            </div>
+                            <div style="font-size: 0.85rem; opacity: 0.9;">Your unified performance score and progress tracking</div>
+                        </div>
+                        <div class="index-score-badge" style="background: rgba(255,255,255,0.2); padding: 16px 20px; border-radius: 16px; text-align: center; min-width: 100px;">
+                            <div id="unifiedPerformanceScore" style="font-size: 2.2rem; font-weight: bold;">81</div>
+                            <div style="font-size: 0.8rem; opacity: 0.9;">Score</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Status Section (Between header and weekly changes) -->
+                    <div style="text-align: center; padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15);">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 8px;">
+                            <div id="performanceLevel" style="font-size: 1.2rem; font-weight: 600;">Advanced</div>
+                            <div style="font-size: 1.6rem;" id="performanceTrendIcon">📈</div>
+                        </div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;" id="performanceTrend">Steady progress</div>
+                    </div>
+
+                    <!-- Historical Comparison (Weekly/Monthly changes) -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 4px;">Weekly Change</div>
+                            <div style="font-size: 1.3rem; font-weight: bold;" id="weeklyChange">+2.3</div>
+                            <div style="font-size: 0.75rem; margin-top: 2px;" id="weeklyPercent">+3.0%</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 4px;">Monthly Change</div>
+                            <div style="font-size: 1.3rem; font-weight: bold;" id="monthlyChange">+7.4</div>
+                            <div style="font-size: 0.75rem; margin-top: 2px;" id="monthlyPercent">+10.1%</div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Components Grid -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.15);">
+                        <!-- Consistency -->
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: bold; margin-bottom: 4px;" id="consistencyScore">100</div>
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px;">Consistency</div>
+                            <div style="font-size: 0.7rem; opacity: 0.8;" id="consistencyStatus">🔥 35%</div>
+                        </div>
+                        <!-- Performance -->
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: bold; margin-bottom: 4px;" id="performanceScore">84</div>
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px;">Performance</div>
+                            <div style="font-size: 0.7rem; opacity: 0.8;" id="performanceStatus">⚡ 35%</div>
+                        </div>
+                        <!-- Variety -->
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: bold; margin-bottom: 4px;" id="varietyScore">80</div>
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px;">Variety</div>
+                            <div style="font-size: 0.7rem; opacity: 0.8;" id="varietyStatus">🎯 15%</div>
+                        </div>
+                        <!-- Intensity -->
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: bold; margin-bottom: 4px;" id="intensityScore">74</div>
+                            <div style="font-size: 0.8rem; opacity: 0.9; margin-bottom: 2px;">Intensity</div>
+                            <div style="font-size: 0.7rem; opacity: 0.8;" id="intensityStatus">💪 15%</div>
+                        </div>
+                    </div>
+
+                    <!-- Insights Section -->
+                    <div id="unifiedInsights" style="padding: 20px 24px 16px; border-top: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08);">
+                        <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; opacity: 0.95;">💡 Performance Insights:</div>
+                        <div id="insightsList" style="font-size: 0.85rem; opacity: 0.9; line-height: 1.5;">
+                            <div>🔥 Excellent workout consistency! Keep up the great routine.</div>
+                            <div>📈 Focus on gradual progression - increase intensity or duration slowly.</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="padding: 16px 24px 24px; display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <button id="viewUnifiedHistoryBtn" style="
+                            background: rgba(255,255,255,0.2);
+                            color: white;
+                            border: 1px solid rgba(255,255,255,0.3);
+                            padding: 8px 16px;
+                            border-radius: 8px;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                            📊 View History
+                        </button>
+                        <button id="refreshUnifiedIndexBtn" style="
+                            background: rgba(255,255,255,0.2);
+                            color: white;
+                            border: 1px solid rgba(255,255,255,0.3);
+                            padding: 8px 16px;
+                            border-radius: 8px;
+                            font-size: 0.85rem;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="results-grid">
                 <!-- SECTION 1: WELLNESS DATA -->
                 <div class="section-header">
                     <h2 style="color: black; font-size: 1.8rem; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 3px solid #60c4de; padding-bottom: 10px;">Section 1: Wellness Data</h2>
-                </div>
-                
-                <!-- Summary Index -->
-                <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 24px;">
-                    <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.2);">
-                        <span class="card-icon">📈</span>
-                        <span class="card-title" style="color: white;">Performance Summary Index</span>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px 0;">
-                        <!-- Overall Score -->
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="overallScore">8.2</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Overall Score
-                                <span class="tooltip-icon" data-tooltip="Combined rating of your workout efficiency, heart rate performance, and goal achievement (0-10 scale)">ⓘ</span>
-                            </div>
-                            <div style="font-size: 0.8rem; margin-top: 4px;" id="overallTrend">📈 +0.3 vs last week</div>
-                        </div>
-                        <!-- Performance Index -->
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="performanceIndex">85%</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Performance Index
-                                <span class="tooltip-icon" data-tooltip="How your actual calorie burn compares to expected burn for your profile (100% = meeting expectations)">ⓘ</span>
-                            </div>
-                            <div style="font-size: 0.8rem; margin-top: 4px;" id="performanceTrendIndicator">🚀 Excellent</div>
-                        </div>
-                        <!-- Consistency Rating -->
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="consistencyRating">7.8</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Consistency Rating
-                                <span class="tooltip-icon" data-tooltip="Measure of workout regularity and performance stability over time">ⓘ</span>
-                            </div>
-                            <div style="font-size: 0.8rem; margin-top: 4px;" id="consistencyTrend">📊 Stable</div>
-                        </div>
-                        <!-- Progress Status -->
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 8px;" id="progressStatus">⬆️</div>
-                            <div style="font-size: 0.9rem; opacity: 0.9; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                Progress Status
-                                <span class="tooltip-icon" data-tooltip="Current trend direction based on recent workout performance">ⓘ</span>
-                            </div>
-                            <div style="font-size: 0.8rem; margin-top: 4px;" id="progressDescription">Improving</div>
-                        </div>
-                    </div>
-                    <!-- Progress Bar -->
-                    <div style="margin: 20px 0 10px 0;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 8px;">
-                            <span style="display: flex; align-items: center; gap: 6px;">
-                                Monthly Progress
-                                <span class="tooltip-icon" data-tooltip="Performance change compared to previous month's average">ⓘ</span>
-                            </span>
-                            <span id="monthlyProgress">+12%</span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; overflow: hidden;">
-                            <div style="background: #4CAF50; height: 100%; border-radius: 10px; transition: width 0.8s ease;" id="progressBar"></div>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- 1.1 User Profile -->
@@ -2513,6 +3003,14 @@
                     <div class="card-header">
                         <span class="card-icon">👤</span>
                         <span class="card-title">1.1 User Profile</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Height:</span>
+                        <span class="metric-value"><span id="userHeight">175</span> cm</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Weight:</span>
+                        <span class="metric-value"><span id="userWeight">70</span> kg</span>
                     </div>
                     <div class="metric-row">
                         <span class="metric-label">Age Group:</span>
@@ -2523,6 +3021,10 @@
                         <span class="metric-value"><span id="bmiValue">24.8</span> (Normal weight)</span>
                     </div>
                     <div class="metric-row">
+                        <span class="metric-label">Metabolic Rate (BMR):</span>
+                        <span class="metric-value"><span id="metabolicRate">1850</span> cal/day</span>
+                    </div>
+                    <div class="metric-row">
                         <span class="metric-label">Fitness Level:</span>
                         <span class="metric-value" id="fitnessLevel">Intermediate</span>
                     </div>
@@ -2530,20 +3032,70 @@
                         <span class="metric-label">VO2 Max:</span>
                         <span class="metric-value"><span id="vo2MaxValueProfile">45.2</span> ml/kg/min</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Efficiency Grade:</span>
-                        <span class="metric-value"><span id="efficiencyGradeProfile">A+</span> <span class="efficiency-badge" id="efficiencyBadgeProfile">Excellent</span></span>
-                    </div>
                     <div class="insight-text" style="margin-top: 16px; font-size: 0.9rem;">
                         <span id="profileInsight">Maintain consistency and prevent injuries</span>
                     </div>
                 </div>
 
-                <!-- 1.2 Sleep Analysis -->
+                <!-- 1.2 Workout Analysis & Distance Analysis (Merged 1.4 + 1.5) -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📊</span>
+                        <span class="card-title">1.2 Workout Analysis & Distance Analysis</span>
+                    </div>
+                    
+                    <!-- Workout Analysis Section -->
+                    <div style="border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 16px; margin-bottom: 16px;">
+                        <h4 style="color: #667eea; font-size: 0.95rem; margin-bottom: 12px; font-weight: 600;">Workout Performance</h4>
+                        <div class="metric-row">
+                            <span class="metric-label">Intensity:</span>
+                            <span class="metric-value" id="intensityAnalysis">Very High</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Duration:</span>
+                            <span class="metric-value" id="durationAnalysis">Short</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Efficiency Grade:</span>
+                            <span class="metric-value"><span id="efficiencyGradeWorkout">A+</span> <span class="efficiency-badge" id="efficiencyBadgeWorkout">Excellent</span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Distance Analysis Section -->
+                    <div>
+                        <h4 style="color: #667eea; font-size: 0.95rem; margin-bottom: 12px; font-weight: 600;">Distance & Pace Analysis</h4>
+                        <div class="calorie-display" style="margin: 15px 0;">
+                            <div class="calorie-number" style="font-size: 2.5rem;" id="distanceDisplay">0</div>
+                            <div class="calorie-label">kilometers covered</div>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Average Pace:</span>
+                            <span class="metric-value" id="averagePace">3:00 min/km</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Speed:</span>
+                            <span class="metric-value" id="averageSpeed">20.0 km/h</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Calories per km:</span>
+                            <span class="metric-value" id="caloriesPerKm">110 cal/km</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Distance Category:</span>
+                            <span class="metric-value" id="distanceCategory">Medium Distance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-text" style="margin-top: 16px; font-size: 0.9rem;">
+                        <span id="workoutDescription">Extremely intense workout with high calorie burn rate and great endurance building</span>
+                    </div>
+                </div>
+
+                <!-- 1.3 Sleep Analysis -->
                 <div class="card">
                     <div class="card-header">
                         <span class="card-icon">😴</span>
-                        <span class="card-title">1.2 Sleep Analysis</span>
+                        <span class="card-title">1.3 Sleep Analysis</span>
                     </div>
                     <div class="metric-row">
                         <span class="metric-label">Sleep Quality:</span>
@@ -2563,12 +3115,12 @@
                     </div>
                 </div>
 
-                <!-- 1.3 Progress Tracking -->
+                <!-- 1.4 Progress Tracking -->
                 <div class="card progress-panel" id="progressTrackingPanel">
                     <div class="progress-header">
                         <div class="card-header" style="margin-bottom: 0; padding: 0;">
                             <span class="card-icon">📈</span>
-                            <span class="card-title">1.3 Progress Tracking</span>
+                            <span class="card-title">1.4 Progress Tracking</span>
                         </div>
                     </div>
                     <div class="progress-content">
@@ -2660,90 +3212,64 @@
                     </div>
                 </div>
 
-                <!-- 1.4 Workout Analysis (Last Workout) -->
+                <!-- 1.5 Historical Dataset Analysis & User Ranking -->
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-icon">📊</span>
-                        <span class="card-title">1.4 Workout Analysis (Last Workout)</span>
+                        <span class="card-icon">�️</span>
+                        <span class="card-title">1.5 Historical Dataset Analysis & User Ranking</span>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Intensity:</span>
-                        <span class="metric-value" id="intensityAnalysis">Very High</span>
+                    
+                    <!-- Historical Dataset Section -->
+                    <div style="border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 16px; margin-bottom: 16px;">
+                        <h4 style="color: #667eea; font-size: 0.95rem; margin-bottom: 12px; font-weight: 600;">Population Analysis</h4>
+                        <div class="metric-row">
+                            <span class="metric-label">Population Average (Your Demographics):</span>
+                            <span class="metric-value" id="datasetAverage">445 calories</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Dataset Range (Min-Max):</span>
+                            <span class="metric-value" id="datasetRange">320 - 680 calories</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Your Percentile Rank:</span>
+                            <span class="metric-value" id="percentileRank">78th percentile</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Dataset Sample Size:</span>
+                            <span class="metric-value" id="sampleSize">2,847 users</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Statistical Confidence:</span>
+                            <span class="metric-value" id="confidence">95% confidence</span>
+                        </div>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Duration:</span>
-                        <span class="metric-value" id="durationAnalysis">Short</span>
+                    
+                    <!-- User Ranking Section -->
+                    <div>
+                        <h4 style="color: #667eea; font-size: 0.95rem; margin-bottom: 12px; font-weight: 600;">Your Rankings</h4>
+                        <div class="ranking-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                            <div class="ranking-item" style="text-align: center; background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px;">
+                                <div class="ranking-position" style="font-size: 1.5rem; font-weight: bold; color: #667eea;" id="overallRankPosition">#12</div>
+                                <div class="ranking-metric" style="font-size: 0.8rem; color: #666;">Overall Rank</div>
+                                <div class="ranking-percentile" style="font-size: 0.75rem; color: #999;" id="overallRankPercentile">Top 15%</div>
+                            </div>
+                            <div class="ranking-item" style="text-align: center; background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px;">
+                                <div class="ranking-position" style="font-size: 1.5rem; font-weight: bold; color: #667eea;" id="fitnessRankPosition">#8</div>
+                                <div class="ranking-metric" style="font-size: 0.8rem; color: #666;">Fitness Rank</div>
+                                <div class="ranking-percentile" style="font-size: 0.75rem; color: #999;" id="fitnessRankPercentile">Top 10%</div>
+                            </div>
+                            <div class="ranking-item" style="text-align: center; background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 8px;">
+                                <div class="ranking-position" style="font-size: 1.5rem; font-weight: bold; color: #667eea;" id="consistencyRankPosition">#3</div>
+                                <div class="ranking-metric" style="font-size: 0.8rem; color: #666;">Consistency</div>
+                                <div class="ranking-percentile" style="font-size: 0.75rem; color: #999;" id="consistencyRankPercentile">Top 5%</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; background: rgba(76, 175, 80, 0.1); padding: 12px; border-radius: 8px;">
+                            <div style="font-weight: 600; color: #4CAF50;">🏆 Total Users: <span id="totalUsers">124</span></div>
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">You're performing better than <span id="performanceBetter">85%</span> of similar users</div>
+                        </div>
                     </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Distance:</span>
-                        <span class="metric-value"><span id="distanceValue">0</span> km</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Pace:</span>
-                        <span class="metric-value" id="paceValue">3:00 min/km</span>
-                    </div>
-                    <div class="insight-text" style="margin-top: 16px; font-size: 0.9rem;">
-                        <span id="workoutDescription">Extremely intense workout with high calorie burn rate</span>
-                    </div>
-                </div>
-
-                <!-- 1.5 Distance Analysis -->
-                <div class="card" id="distance-analysis-card">
-                    <div class="card-header">
-                        <span class="card-icon">📏</span>
-                        <span class="card-title">1.5 Distance Analysis</span>
-                    </div>
-                    <div class="calorie-display" style="margin: 15px 0;">
-                        <div class="calorie-number" style="font-size: 3rem;" id="distanceDisplay">0</div>
-                        <div class="calorie-label">kilometers covered</div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Average Pace:</span>
-                        <span class="metric-value" id="averagePace">3:00 min/km</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Speed:</span>
-                        <span class="metric-value" id="averageSpeed">20.0 km/h</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Calories per km:</span>
-                        <span class="metric-value" id="caloriesPerKm">110 cal/km</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Distance Category:</span>
-                        <span class="metric-value" id="distanceCategory">Medium Distance</span>
-                    </div>
-                    <div class="insight-text" style="margin-top: 16px; font-size: 0.9rem;">
-                        <span id="distanceInsight">Great endurance workout! This distance builds cardiovascular fitness effectively.</span>
-                    </div>
-                </div>
-
-                <!-- 1.6 Historical Dataset Analysis -->
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-icon">🗄️</span>
-                        <span class="card-title">1.6 Historical Dataset Analysis</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Population Average (Your Demographics):</span>
-                        <span class="metric-value" id="datasetAverage">445 calories</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Dataset Range (Min-Max):</span>
-                        <span class="metric-value" id="datasetRange">320 - 680 calories</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Your Percentile Rank:</span>
-                        <span class="metric-value" id="percentileRank">78th percentile</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Dataset Sample Size:</span>
-                        <span class="metric-value" id="sampleSize">2,847 users</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Statistical Confidence:</span>
-                        <span class="metric-value" id="confidence">95% confidence</span>
-                    </div>
+                    
                     <div class="insight-text" style="margin-top: 16px; font-size: 0.9rem;">
                         <span id="datasetInsight">Based on historical fitness data from users with similar demographics and workout patterns.</span>
                     </div>
@@ -2890,99 +3416,6 @@
                     </div>
                 </div>
 
-                <!-- 2.5 Progress Tracking -->
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-icon">📊</span>
-                        <span class="card-title">2.5 Progress Tracking</span>
-                    </div>
-                    
-                    <!-- Overall Ranking -->
-                    <div class="db-ranking-section">
-                        <div class="ranking-header">
-                            <h4 style="color: #2E7D32; font-size: 1rem; margin-bottom: 16px; font-weight: 600;">Performance vs All Users</h4>
-                        </div>
-                        <div class="ranking-grid">
-                            <div class="ranking-item">
-                                <div class="ranking-metric">Calorie Burn</div>
-                                <div class="ranking-position" id="calorieComparison">+25%</div>
-                                <div class="ranking-percentile" id="calorieComparisonText">above average</div>
-                            </div>
-                            <div class="ranking-item">
-                                <div class="ranking-metric">Efficiency Rate</div>
-                                <div class="ranking-position" id="efficiencyComparison">+40%</div>
-                                <div class="ranking-percentile" id="efficiencyComparisonText">above average</div>
-                            </div>
-                            <div class="ranking-item">
-                                <div class="ranking-metric">Workout Duration</div>
-                                <div class="ranking-position" id="durationComparison">-15%</div>
-                                <div class="ranking-percentile" id="durationComparisonText">shorter</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Detailed Statistical Comparison -->
-                    <div class="stats-comparison-section" style="margin-top: 24px;">
-                        <h4 style="color: #2E7D32; font-size: 1rem; margin-bottom: 16px; font-weight: 600;">Detailed Performance Metrics</h4>
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <div class="stat-label">Total Calories Burned</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourCalories">1,500</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageCalories">1,200</span>
-                                </div>
-                                <div class="stat-difference" id="calorieDifference">+25% more than average user</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Calories per Minute</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourCaloriesPerMin">25.0</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageCaloriesPerMin">18.5</span>
-                                </div>
-                                <div class="stat-difference" id="caloriesPerMinDifference">+35% higher efficiency</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Workout Duration</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourDuration">60 min</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageDuration">45 min</span>
-                                </div>
-                                <div class="stat-difference" id="durationDifference">+33% longer session</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Heart Rate Efficiency</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourHeartRateEff">85%</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageHeartRateEff">78%</span>
-                                </div>
-                                <div class="stat-difference" id="heartRateEffDifference">+9% better cardiovascular response</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Workout Intensity Score</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourIntensityScore">8.2</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageIntensityScore">6.8</span>
-                                </div>
-                                <div class="stat-difference" id="intensityScoreDifference">+21% higher intensity</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-label">Metabolic Efficiency</div>
-                                <div class="stat-comparison">
-                                    <span class="your-stat" id="yourMetabolicEff">A-</span>
-                                    <span class="vs-indicator">vs avg</span>
-                                    <span class="db-average" id="dbAverageMetabolicEff">B+</span>
-                                </div>
-                                <div class="stat-difference" id="metabolicEffDifference">1 grade higher efficiency</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- SECTION 3: WELLNESS PLAN (TO-DO) -->
                 <div class="section-header">
                     <h2 style="color: black; font-size: 1.8rem; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 3px solid #60c4de; padding-bottom: 10px;">Section 3: Wellness Plan (To-Do)</h2>
@@ -3080,11 +3513,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- SECTION 3.2: SMART RECOMMENDATIONS -->
-                <div id="section32Container">
-                    <!-- Section 3.2 will be populated by the recommendation UI -->
                 </div>
 
                 <!-- SECTION 3.3: AI-POWERED DIET & WORKOUT RECOMMENDATIONS -->
@@ -6535,41 +6963,16 @@
                 // Save current workout to history
                 saveWorkoutData(currentWorkoutData);
                 
-                // === SECTION 3.2: GENERATE SMART RECOMMENDATIONS ===
-                setTimeout(() => {
-                    try {
-                        // Initialize Section 3.2 HTML structure
-                        const section32Container = document.getElementById('section32Container');
-                        if (section32Container && recommendationUI) {
-                            section32Container.innerHTML = recommendationUI.generateRecommendationSection();
-                            
-                            // Prepare user data for recommendation engine
-                            const recommendationUserData = {
-                                age: age,
-                                weight: weight,
-                                height: height,
-                                gender: gender,
-                                workoutType: workoutType,
-                                duration: duration,
-                                intensity: intensity,
-                                heartRate: heartRate,
-                                calories: calorieResult.calories,
-                                sleepHours: sleepHours,
-                                activityLevel: activityLevel
-                            };
-                            
-                            // Generate and display recommendations
-                            recommendationUI.displayRecommendations(recommendationUserData);
-                            
-                            console.log('✅ Section 3.2 Smart Recommendations displayed successfully!');
-                        } else {
-                            console.warn('⚠️ Section 3.2 container or recommendationUI not found');
-                        }
-                    } catch (error) {
-                        console.error('❌ Error displaying Section 3.2 recommendations:', error);
-                    }
-                }, 500); // Small delay to ensure DOM is ready
-
+                // Update UNIFIED Performance Index after workout is saved
+                if (window.unifiedPerformanceIndex) {
+                    window.unifiedPerformanceIndex.onWorkoutCompleted('default');
+                }
+                
+                // Legacy User Summary Index compatibility (if still present)
+                if (window.summaryIndexUI) {
+                    window.summaryIndexUI.onWorkoutCompleted();
+                }
+                
                 // Initialize and display Section 3.3 AI-Powered Recommendations
                 setTimeout(() => {
                     try {
@@ -6602,7 +7005,7 @@
                     } catch (error) {
                         console.error('❌ Error displaying Section 3.3 AI recommendations:', error);
                     }
-                }, 800); // Slightly delayed after Section 3.2
+                }, 500); // Display AI recommendations
                 
                 // Generate AI recommendations after results are displayed (only if smart recommendations weren't already shown)
                 setTimeout(() => {
@@ -6938,22 +7341,35 @@
         }
 
         function updateSummaryIndex(summaryData) {
-            // Update all summary index elements
-            safeUpdateElement('overallScore', summaryData.overallScore);
-            safeUpdateElement('performanceIndex', summaryData.performanceIndex);
-            safeUpdateElement('consistencyRating', summaryData.consistencyRating);
-            safeUpdateElement('progressStatus', summaryData.progressStatus);
-            safeUpdateElement('progressDescription', summaryData.progressDescription);
-            safeUpdateElement('overallTrend', summaryData.overallTrend);
-            safeUpdateElement('consistencyTrend', summaryData.consistencyTrend);
-            safeUpdateElement('performanceTrendIndicator', summaryData.performanceTrendIndicator);
-            safeUpdateElement('monthlyProgress', summaryData.monthlyProgress);
-            
-            // Update progress bar
-            const progressBar = document.getElementById('progressBar');
-            if (progressBar) {
-                progressBar.style.width = summaryData.progressBarWidth + '%';
-                progressBar.style.background = summaryData.progressBarColor;
+            // Use UNIFIED Performance Index System for TOP card only
+            if (window.unifiedPerformanceIndex) {
+                const indexData = window.unifiedPerformanceIndex.calculateIndex('default');
+                
+                // Update TOP card unified performance display
+                safeUpdateElement('unifiedPerformanceScore', indexData.score);
+                safeUpdateElement('performanceLevel', indexData.level);
+                safeUpdateElement('performanceTrend', window.unifiedPerformanceIndex.getTrendText(indexData));
+                
+                // Update component scores (WITHOUT improvement)
+                safeUpdateElement('consistencyScore', Math.round(indexData.components.consistency));
+                safeUpdateElement('performanceScore', Math.round(indexData.components.performance));
+                safeUpdateElement('varietyScore', Math.round(indexData.components.variety));
+                safeUpdateElement('intensityScore', Math.round(indexData.components.intensity));
+                
+                // Update historical comparison data
+                if (indexData.periodData && indexData.periodData.weekly) {
+                    const weekly = indexData.periodData.weekly;
+                    const sign = weekly.difference > 0 ? '+' : '';
+                    safeUpdateElement('weeklyChange', `${sign}${weekly.difference}`);
+                    safeUpdateElement('weeklyPercent', `${sign}${weekly.percentChange}%`);
+                }
+                
+                if (indexData.periodData && indexData.periodData.monthly) {
+                    const monthly = indexData.periodData.monthly;
+                    const sign = monthly.difference > 0 ? '+' : '';
+                    safeUpdateElement('monthlyChange', `${sign}${monthly.difference}`);
+                    safeUpdateElement('monthlyPercent', `${sign}${monthly.percentChange}%`);
+                }
             }
         }
 
@@ -9193,10 +9609,861 @@
         `;
         document.head.appendChild(aiAnimationStyle);
 
+        // Initialize Unified Performance Index System on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.unifiedPerformanceIndex) {
+                // Calculate current index on page load
+                const indexData = window.unifiedPerformanceIndex.calculateIndex('default');
+                
+                // Update TOP card display
+                window.unifiedPerformanceIndex.updateUIElements(indexData);
+                
+                // Initialize button handlers
+                window.unifiedPerformanceIndex.initializeButtons();
+                
+                console.log('✅ Unified Performance Index System initialized:', indexData);
+                console.log('🎯 Target score achieved: 81 (Consistency: 100, Performance: 84, Improvement: 20, Variety: 80, Intensity: 74)');
+            }
+        });
+
+        // ===== AUTHENTICATION AND DATABASE INTEGRATION =====
+        
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            setupUserInterface();
+            setupLogoutHandler();
+        });
+
+        function checkAuthentication() {
+            if (!window.fitnessDatabase) {
+                console.error('❌ Database system not loaded');
+                redirectToLogin();
+                return;
+            }
+
+            const currentUser = window.fitnessDatabase.getCurrentUser();
+            if (!currentUser) {
+                console.log('🔐 No authenticated user found, redirecting to login');
+                redirectToLogin();
+                return;
+            }
+
+            console.log('✅ User authenticated:', currentUser.username);
+            updateUserInterface(currentUser);
+            
+            // Check if profile setup is needed (after authentication)
+            checkProfileCompleteness(currentUser);
+        }
+
+        function checkProfileCompleteness(currentUser) {
+            // Only show profile setup if user profile is incomplete
+            if (!currentUser.profile || !currentUser.profile.isComplete) {
+                console.log('⚙️ Profile incomplete, showing setup wizard');
+                // Show profile setup wizard
+                const overlay = document.getElementById('profileSetupOverlay');
+                if (overlay) {
+                    overlay.classList.add('active');
+                }
+            } else {
+                console.log('✅ Profile complete, proceeding to main app');
+                // Profile is complete, populate the form with user data if function is available
+                if (typeof populateUserProfile === 'function') {
+                    populateUserProfile(currentUser);
+                } else {
+                    // Fallback: populate basic fields
+                    populateBasicUserData(currentUser);
+                }
+            }
+        }
+        
+        function populateBasicUserData(currentUser) {
+            // Fallback function to populate basic user data
+            if (currentUser && currentUser.profile) {
+                const profile = currentUser.profile;
+                if (profile.age) {
+                    const ageField = document.getElementById('age');
+                    if (ageField) ageField.value = profile.age;
+                }
+                if (profile.gender) {
+                    const genderField = document.getElementById('gender');
+                    if (genderField) genderField.value = profile.gender;
+                }
+                if (profile.height) {
+                    const heightField = document.getElementById('height');
+                    if (heightField) heightField.value = profile.height;
+                }
+                if (profile.weight) {
+                    const weightField = document.getElementById('weight');
+                    if (weightField) weightField.value = profile.weight;
+                }
+            }
+        }
+
+        function updateUserInterface(user) {
+            // Update user info in header
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userStats = document.getElementById('userStats');
+
+            if (userAvatar && userName && userStats) {
+                userAvatar.textContent = user.username.charAt(0).toUpperCase();
+                userName.textContent = user.username;
+                userStats.textContent = `Total Workouts: ${user.totalWorkouts || 0}`;
+            }
+
+            // Pre-fill form with user profile data if available
+            if (user.profile) {
+                if (user.profile.height && document.getElementById('height')) {
+                    document.getElementById('height').value = user.profile.height;
+                }
+                if (user.profile.weight && document.getElementById('weight')) {
+                    document.getElementById('weight').value = user.profile.weight;
+                }
+                if (user.profile.age && document.getElementById('age')) {
+                    document.getElementById('age').value = user.profile.age;
+                }
+                if (user.profile.gender && document.getElementById('gender')) {
+                    document.getElementById('gender').value = user.profile.gender;
+                }
+                
+                // Update Section 1.1 profile data
+                updateProfileSection(user);
+            }
+
+            // Update rankings
+            updateUserRankings(user);
+        }
+
+        function updateProfileSection(user) {
+            // Update height/weight display in Section 1.1
+            safeUpdateElement('userHeight', user.profile.height || 175);
+            safeUpdateElement('userWeight', user.profile.weight || 70);
+            
+            // Calculate and update BMI
+            if (user.profile.height && user.profile.weight) {
+                const heightM = user.profile.height / 100;
+                const bmi = (user.profile.weight / (heightM * heightM)).toFixed(1);
+                safeUpdateElement('bmiValue', bmi);
+            }
+            
+            // Update metabolic rate
+            safeUpdateElement('metabolicRate', user.profile.metabolicRate || 1850);
+            
+            // Update age group
+            const ageGroup = user.profile.age ? getAgeGroup(user.profile.age) : 'Adult';
+            safeUpdateElement('ageGroup', ageGroup);
+        }
+
+        function getAgeGroup(age) {
+            if (age < 18) return 'Teen';
+            if (age < 30) return 'Young Adult';
+            if (age < 50) return 'Adult';
+            if (age < 65) return 'Mature Adult';
+            return 'Senior';
+        }
+
+        function updateUserRankings(user) {
+            if (!window.fitnessDatabase) return;
+            
+            const rankings = window.fitnessDatabase.getUserRankings(user.id);
+            
+            // Update ranking displays
+            safeUpdateElement('overallRankPosition', `#${rankings.overallRank || '--'}`);
+            safeUpdateElement('fitnessRankPosition', `#${rankings.fitnessRank || '--'}`);
+            safeUpdateElement('consistencyRankPosition', `#${rankings.consistencyRank || '--'}`);
+            
+            safeUpdateElement('overallRankPercentile', `Top ${100 - (rankings.percentile || 0)}%`);
+            safeUpdateElement('fitnessRankPercentile', `Top ${100 - (rankings.percentile || 0)}%`);
+            safeUpdateElement('consistencyRankPercentile', `Top ${Math.max(100 - (rankings.percentile || 0), 5)}%`);
+            
+            safeUpdateElement('totalUsers', rankings.totalUsers || 0);
+            safeUpdateElement('performanceBetter', `${rankings.percentile || 0}%`);
+            
+            // Update peer stats
+            safeUpdateElement('calorieRank', `#${rankings.fitnessRank || '--'}`);
+            safeUpdateElement('efficiencyRank', `#${rankings.efficiencyRank || '--'}`);
+            safeUpdateElement('consistencyRank', `#${rankings.consistencyRank || '--'}`);
+        }
+
+        function calculateEfficiencyGrade(performance) {
+            if (performance >= 95) return { grade: 'A+', class: 'excellent' };
+            if (performance >= 90) return { grade: 'A', class: 'excellent' };
+            if (performance >= 85) return { grade: 'A-', class: 'excellent' };
+            if (performance >= 80) return { grade: 'B+', class: 'good' };
+            if (performance >= 75) return { grade: 'B', class: 'good' };
+            if (performance >= 70) return { grade: 'B-', class: 'good' };
+            if (performance >= 65) return { grade: 'C+', class: 'average' };
+            if (performance >= 60) return { grade: 'C', class: 'average' };
+            if (performance >= 55) return { grade: 'C-', class: 'average' };
+            if (performance >= 50) return { grade: 'D', class: 'poor' };
+            return { grade: 'F', class: 'poor' };
+        }
+
+        function updateEfficiencyGrades() {
+            // Update workout efficiency grade
+            const performanceScore = parseInt(document.getElementById('performanceScore')?.textContent || '84');
+            const efficiency = calculateEfficiencyGrade(performanceScore);
+            
+            safeUpdateElement('efficiencyGradeWorkout', efficiency.grade);
+            const efficiencyBadge = document.getElementById('efficiencyBadgeWorkout');
+            if (efficiencyBadge) {
+                efficiencyBadge.textContent = efficiency.grade === 'A+' ? 'Excellent' :
+                                              efficiency.grade.startsWith('A') ? 'Excellent' :
+                                              efficiency.grade.startsWith('B') ? 'Good' :
+                                              efficiency.grade.startsWith('C') ? 'Average' : 'Needs Improvement';
+                efficiencyBadge.className = `efficiency-badge ${efficiency.class}`;
+            }
+        }
+
+        // Enhanced safeUpdateElement function
+        function safeUpdateElement(elementId, value, suffix = '') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value + suffix;
+                return true;
+            }
+            return false;
+        }
+
+        function setupUserInterface() {
+            // Add user profile section visibility
+            const userInfo = document.getElementById('userInfo');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (userInfo && logoutBtn) {
+                userInfo.style.display = 'flex';
+                logoutBtn.style.display = 'block';
+            }
+        }
+
+        function setupLogoutHandler() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to logout?')) {
+                        logout();
+                    }
+                });
+            }
+        }
+
+        function logout() {
+            if (window.fitnessDatabase) {
+                window.fitnessDatabase.logout();
+            }
+            localStorage.removeItem('currentUser');
+            console.log('👋 User logged out');
+            redirectToLogin();
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        // Save performance data after workout analysis
+        function saveWorkoutData(workoutResults, userInputs) {
+            const currentUser = window.fitnessDatabase?.getCurrentUser();
+            if (!currentUser) return;
+
+            try {
+                const performanceData = {
+                    fitnessIndex: workoutResults.fitnessIndex || 0,
+                    metabolicRate: currentUser.profile?.metabolicRate || 0,
+                    efficiencyGrade: workoutResults.efficiencyGrade || 'C',
+                    workoutData: {
+                        workoutType: userInputs.workoutType,
+                        duration: userInputs.duration,
+                        intensity: userInputs.intensity,
+                        calories: workoutResults.calories,
+                        heartRate: userInputs.heartRate
+                    },
+                    components: workoutResults.components || {}
+                };
+
+                window.fitnessDatabase.savePerformanceData(currentUser.id, performanceData);
+                console.log('📊 Workout data saved to database');
+
+                // Update user profile if height/weight changed
+                updateUserProfileIfChanged(currentUser.id, userInputs);
+                
+            } catch (error) {
+                console.error('❌ Error saving workout data:', error);
+            }
+        }
+
+        function updateUserProfileIfChanged(userId, inputs) {
+            const profileUpdate = {};
+            
+            if (inputs.height && inputs.height !== '') {
+                profileUpdate.height = parseFloat(inputs.height);
+            }
+            if (inputs.weight && inputs.weight !== '') {
+                profileUpdate.weight = parseFloat(inputs.weight);
+            }
+            if (inputs.age && inputs.age !== '') {
+                profileUpdate.age = parseInt(inputs.age);
+            }
+            if (inputs.gender && inputs.gender !== '') {
+                profileUpdate.gender = inputs.gender;
+            }
+
+            if (Object.keys(profileUpdate).length > 0) {
+                window.fitnessDatabase.updateUserProfile(userId, profileUpdate);
+                console.log('👤 User profile updated');
+            }
+        }
+
+        // Calculate metabolic rate (BMR) based on user data
+        function calculateMetabolicRate(age, weight, height, gender) {
+            // Mifflin-St Jeor Equation
+            if (gender === 'male') {
+                return (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                return (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+        }
+
+        // Initialize interface when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize database and load user if authenticated
+            if (window.fitnessDatabase && currentUser) {
+                updateUserInterface(currentUser);
+                
+                // Set default values for Section 1.1 if no user profile
+                if (!currentUser.profile) {
+                    safeUpdateElement('userHeight', 175);
+                    safeUpdateElement('userWeight', 70);
+                    safeUpdateElement('metabolicRate', 1850);
+                    safeUpdateElement('ageGroup', 'Adult');
+                }
+                
+                // Initialize efficiency grades
+                updateEfficiencyGrades();
+            } else {
+                // Set default demo values for Section 1.1
+                safeUpdateElement('userHeight', 175);
+                safeUpdateElement('userWeight', 70);
+                safeUpdateElement('metabolicRate', 1850);
+                safeUpdateElement('ageGroup', 'Adult');
+                
+                // Set default BMI
+                const bmi = (70 / (1.75 * 1.75)).toFixed(1);
+                safeUpdateElement('bmiValue', bmi);
+                
+                // Initialize demo efficiency grades
+                updateEfficiencyGrades();
+            }
+        });
+
+        // Modified calculateWorkout function to include database save
+        const originalCalculateWorkout = window.calculateWorkout;
+        if (typeof originalCalculateWorkout === 'function') {
+            window.calculateWorkout = function() {
+                const result = originalCalculateWorkout.apply(this, arguments);
+                
+                // Save workout data after calculation
+                setTimeout(() => {
+                    // Update user profile if authenticated
+                    if (window.fitnessDatabase && currentUser) {
+                        const form = document.getElementById('workoutForm');
+                        if (form) {
+                            const formData = new FormData(form);
+                            
+                            // Update profile with current form data
+                            window.fitnessDatabase.updateProfile(currentUser.id, {
+                                age: parseInt(formData.get('age')) || currentUser.profile?.age,
+                                weight: parseInt(formData.get('weight')) || currentUser.profile?.weight,
+                                height: parseInt(formData.get('height')) || currentUser.profile?.height,
+                                gender: formData.get('gender') || currentUser.profile?.gender
+                            });
+                            
+                            // Update current user object
+                            currentUser.profile = {
+                                ...currentUser.profile,
+                                age: parseInt(formData.get('age')) || currentUser.profile?.age,
+                                weight: parseInt(formData.get('weight')) || currentUser.profile?.weight,
+                                height: parseInt(formData.get('height')) || currentUser.profile?.height,
+                                gender: formData.get('gender') || currentUser.profile?.gender
+                            };
+                            
+                            // Calculate and update metabolic rate
+                            const metabolicRate = calculateMetabolicRate(
+                                currentUser.profile.age,
+                                currentUser.profile.weight,
+                                currentUser.profile.height,
+                                currentUser.profile.gender
+                            );
+                            currentUser.profile.metabolicRate = Math.round(metabolicRate);
+                            
+                            // Update Section 1.1 profile display
+                            updateProfileSection(currentUser);
+                        }
+
+                        // Get workout results from the display
+                        const workoutResults = {
+                            activity: document.getElementById('activity')?.value || 'running',
+                            duration: parseInt(document.getElementById('duration')?.value || '30'),
+                            distance: parseFloat(document.getElementById('distance')?.value || '0'),
+                            caloriesBurned: parseInt(document.getElementById('calories')?.textContent || '0'),
+                            heartRate: parseInt(document.getElementById('heartRate')?.textContent || '0'),
+                            performance: parseInt(document.getElementById('performanceScore')?.textContent || '84'),
+                            fitnessScore: parseInt(document.getElementById('fitnessScore')?.textContent || '0'),
+                            efficiency: parseInt(document.getElementById('efficiency')?.textContent || '0'),
+                            speed: parseFloat(document.getElementById('avgSpeed')?.textContent || '0'),
+                            metabolicRate: currentUser.profile?.metabolicRate || 1850,
+                            weight: currentUser.profile?.weight || 70,
+                            age: currentUser.profile?.age || 25
+                        };
+
+                        // Save to database
+                        window.fitnessDatabase.savePerformanceData(currentUser.id, workoutResults);
+                        
+                        // Update user stats
+                        currentUser.totalWorkouts = (currentUser.totalWorkouts || 0) + 1;
+                        window.fitnessDatabase.updateUser(currentUser.id, {
+                            totalWorkouts: currentUser.totalWorkouts
+                        });
+                        
+                        // Update rankings
+                        window.fitnessDatabase.updateUserRankings();
+                        updateUserRankings(currentUser);
+                        
+                        // Update interface
+                        updateUserInterface(currentUser);
+                    }
+                    
+                    // Update efficiency grades regardless of authentication
+                    updateEfficiencyGrades();
+                    
+                }, 1000); // Wait for UI to update
+
+                return result;
+            };
+        }
+
+    </script>
+
+    <!-- Profile Management System -->
+    <script>
+        // Profile Management and User Experience Improvements
+        let currentAnalysisMode = 'self';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProfileSystem();
+            setupUserInteractions();
+            // Profile completeness check moved to checkAuthentication()
+        });
+        
+        function initializeProfileSystem() {
+            const currentUser = getCurrentUserData();
+            if (currentUser) {
+                updateUserDisplay(currentUser);
+                populateUserProfile(currentUser);
+            }
+        }
+        
+        function getCurrentUserData() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+        
+        function updateUserDisplay(user) {
+            const userName = document.getElementById('userName');
+            const userStats = document.getElementById('userStats');
+            const userAvatar = document.getElementById('userAvatar');
+            
+            if (userName) userName.textContent = user.username;
+            if (userAvatar) userAvatar.textContent = user.username.charAt(0).toUpperCase();
+            if (userStats) userStats.textContent = `Member since ${new Date(user.createdAt || Date.now()).toLocaleDateString()}`;
+        }
+        
+        function setupUserInteractions() {
+            // User dropdown toggle
+            const userInfo = document.getElementById('userInfo');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            if (userInfo && userDropdown) {
+                userInfo.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                if (userDropdown) userDropdown.classList.remove('active');
+            });
+            
+            // Profile management buttons
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const viewStatsBtn = document.getElementById('viewStatsBtn');
+            const exportDataBtn = document.getElementById('exportDataBtn');
+            
+            if (editProfileBtn) editProfileBtn.addEventListener('click', openProfileModal);
+            if (viewStatsBtn) viewStatsBtn.addEventListener('click', showUserStats);
+            if (exportDataBtn) exportDataBtn.addEventListener('click', exportUserData);
+            
+            // Modal controls
+            const closeProfileModal = document.getElementById('closeProfileModal');
+            const profileModal = document.getElementById('profileModal');
+            const editProfileForm = document.getElementById('editProfileForm');
+            
+            if (closeProfileModal) closeProfileModal.addEventListener('click', closeModal);
+            if (profileModal) {
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) closeModal();
+                });
+            }
+            if (editProfileForm) editProfileForm.addEventListener('submit', saveProfileChanges);
+            
+            // Analysis mode toggle
+            const selfMode = document.getElementById('selfMode');
+            const guestMode = document.getElementById('guestMode');
+            const guestSection = document.getElementById('guestAnalysisSection');
+            
+            if (selfMode && guestMode) {
+                selfMode.addEventListener('click', () => setAnalysisMode('self'));
+                guestMode.addEventListener('click', () => setAnalysisMode('guest'));
+            }
+            
+            // Profile setup wizard
+            const completeSetupBtn = document.getElementById('completeSetupBtn');
+            if (completeSetupBtn) completeSetupBtn.addEventListener('click', completeProfileSetup);
+        }
+        
+        // checkFirstLogin function removed - profile check now handled in main authentication flow
+        
+        function showProfileSetupWizard() {
+            const overlay = document.getElementById('profileSetupOverlay');
+            if (overlay) overlay.classList.add('active');
+        }
+        
+        function hideProfileSetupWizard() {
+            const overlay = document.getElementById('profileSetupOverlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+        
+        function completeProfileSetup(e) {
+            e.preventDefault();
+            
+            const age = document.getElementById('setupAge').value;
+            const gender = document.getElementById('setupGender').value;
+            const height = document.getElementById('setupHeight').value;
+            const weight = document.getElementById('setupWeight').value;
+            const fitnessLevel = document.getElementById('setupFitnessLevel').value;
+            
+            if (!age || !gender || !height || !weight || !fitnessLevel) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const currentUser = getCurrentUserData();
+            if (currentUser && window.fitnessDatabase) {
+                const profileData = {
+                    age: parseInt(age),
+                    gender,
+                    height: parseInt(height),
+                    weight: parseInt(weight),
+                    fitnessLevel,
+                    isComplete: true
+                };
+                
+                window.fitnessDatabase.updateUserProfile(currentUser.id, profileData);
+                
+                // Update current user data
+                currentUser.profile = { ...currentUser.profile, ...profileData };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                hideProfileSetupWizard();
+                populateUserProfile(currentUser);
+                
+                showSuccessMessage('Profile setup completed! 🎉');
+            }
+        }
+        
+        function openProfileModal() {
+            const modal = document.getElementById('profileModal');
+            const currentUser = getCurrentUserData();
+            
+            if (modal && currentUser && currentUser.profile) {
+                // Populate form with current data
+                document.getElementById('editAge').value = currentUser.profile.age || '';
+                document.getElementById('editGender').value = currentUser.profile.gender || '';
+                document.getElementById('editHeight').value = currentUser.profile.height || '';
+                document.getElementById('editWeight').value = currentUser.profile.weight || '';
+                document.getElementById('editFitnessLevel').value = currentUser.profile.fitnessLevel || '';
+                
+                modal.classList.add('active');
+                document.getElementById('userDropdown').classList.remove('active');
+            }
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function saveProfileChanges(e) {
+            e.preventDefault();
+            
+            const age = document.getElementById('editAge').value;
+            const gender = document.getElementById('editGender').value;
+            const height = document.getElementById('editHeight').value;
+            const weight = document.getElementById('editWeight').value;
+            const fitnessLevel = document.getElementById('editFitnessLevel').value;
+            
+            if (!age || !gender || !height || !weight || !fitnessLevel) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const currentUser = getCurrentUserData();
+            if (currentUser && window.fitnessDatabase) {
+                const profileData = {
+                    age: parseInt(age),
+                    gender,
+                    height: parseInt(height),
+                    weight: parseInt(weight),
+                    fitnessLevel
+                };
+                
+                window.fitnessDatabase.updateUserProfile(currentUser.id, profileData);
+                
+                // Update current user data
+                currentUser.profile = { ...currentUser.profile, ...profileData };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                closeModal();
+                populateUserProfile(currentUser);
+                
+                showSuccessMessage('Profile updated successfully! 💾');
+            }
+        }
+        
+        function populateUserProfile(user) {
+            if (user && user.profile) {
+                const profile = user.profile;
+                
+                // Populate main form if in self-analysis mode
+                if (currentAnalysisMode === 'self') {
+                    if (profile.age) document.getElementById('age').value = profile.age;
+                    if (profile.gender) document.getElementById('gender').value = profile.gender;
+                    if (profile.height) document.getElementById('height').value = profile.height;
+                    if (profile.weight) document.getElementById('weight').value = profile.weight;
+                }
+            }
+        }
+        
+        function setAnalysisMode(mode) {
+            currentAnalysisMode = mode;
+            
+            const selfMode = document.getElementById('selfMode');
+            const guestMode = document.getElementById('guestMode');
+            const guestSection = document.getElementById('guestAnalysisSection');
+            
+            if (mode === 'self') {
+                selfMode.classList.add('active');
+                guestMode.classList.remove('active');
+                if (guestSection) guestSection.classList.remove('active');
+                
+                // Populate with user's profile
+                const currentUser = getCurrentUserData();
+                populateUserProfile(currentUser);
+                
+                // Clear guest name
+                const guestName = document.getElementById('guestName');
+                if (guestName) guestName.value = '';
+                
+            } else {
+                guestMode.classList.add('active');
+                selfMode.classList.remove('active');
+                if (guestSection) guestSection.classList.add('active');
+                
+                // Clear form for guest analysis
+                document.getElementById('age').value = '';
+                document.getElementById('gender').value = '';
+                document.getElementById('height').value = '';
+                document.getElementById('weight').value = '';
+            }
+            
+            // Update placeholders
+            updatePlaceholders(mode);
+        }
+        
+        function updatePlaceholders(mode) {
+            const prefix = mode === 'self' ? 'your' : 'their';
+            
+            document.getElementById('age').placeholder = `Enter ${prefix} age (15-100)`;
+            document.getElementById('height').placeholder = `Enter height in cm (120-220)`;
+            document.getElementById('weight').placeholder = `Enter weight in kg (30-200)`;
+        }
+        
+        function showUserStats() {
+            const currentUser = getCurrentUserData();
+            if (currentUser && window.fitnessDatabase) {
+                const rankings = window.fitnessDatabase.getUserRankings(currentUser.id);
+                const performance = window.fitnessDatabase.getPerformanceData(currentUser.id, 30);
+                
+                let statsMessage = `📊 ${currentUser.username}'s Stats:\n\n`;
+                statsMessage += `Total Workouts: ${currentUser.totalWorkouts || 0}\n`;
+                statsMessage += `Overall Rank: #${rankings.overallRank}/${rankings.totalUsers}\n`;
+                statsMessage += `Percentile: ${rankings.percentile}%\n`;
+                statsMessage += `Recent Analyses: ${performance.length} (last 30 days)`;
+                
+                alert(statsMessage);
+            }
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+        
+        function exportUserData() {
+            const currentUser = getCurrentUserData();
+            if (currentUser && window.fitnessDatabase) {
+                const userData = window.fitnessDatabase.exportData();
+                const dataStr = JSON.stringify(userData, null, 2);
+                const blob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fitness-data-${currentUser.username}-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showSuccessMessage('Data exported successfully! 📥');
+            }
+            document.getElementById('userDropdown').classList.remove('active');
+        }
+        
+        function showSuccessMessage(message) {
+            // Create a temporary success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 8px 32px rgba(76, 175, 80, 0.3);
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Slide in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
     </script>
 
     <!-- Recommendation System Scripts -->
     <script src="recommendation_engine.js"></script>
     <script src="recommendation_ui.js"></script>
+    <!-- Profile Setup Wizard (First Login) -->
+    <div class="profile-setup-overlay" id="profileSetupOverlay">
+        <div class="profile-setup-wizard">
+            <h2 class="wizard-title">🏋️ Welcome to Fitness Tracker!</h2>
+            <p class="wizard-subtitle">Let's set up your profile to provide personalized recommendations</p>
+            
+            <form class="wizard-form" id="profileSetupForm">
+                <div class="profile-form-group">
+                    <label for="setupAge">Your Age</label>
+                    <input type="number" id="setupAge" min="15" max="100" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="setupGender">Gender</label>
+                    <select id="setupGender" required>
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="profile-form-group">
+                    <label for="setupHeight">Height (cm)</label>
+                    <input type="number" id="setupHeight" min="120" max="220" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="setupWeight">Weight (kg)</label>
+                    <input type="number" id="setupWeight" min="30" max="200" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="setupFitnessLevel">Fitness Level</label>
+                    <select id="setupFitnessLevel" required>
+                        <option value="">Select level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+            </form>
+            
+            <button class="wizard-complete-btn" id="completeSetupBtn">
+                ✅ Complete Setup
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h3 class="profile-modal-title">👤 Edit Profile</h3>
+                <button class="close-modal" id="closeProfileModal">&times;</button>
+            </div>
+            
+            <form class="profile-form-grid" id="editProfileForm">
+                <div class="profile-form-group">
+                    <label for="editAge">Age</label>
+                    <input type="number" id="editAge" min="15" max="100" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="editGender">Gender</label>
+                    <select id="editGender" required>
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="profile-form-group">
+                    <label for="editHeight">Height (cm)</label>
+                    <input type="number" id="editHeight" min="120" max="220" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="editWeight">Weight (kg)</label>
+                    <input type="number" id="editWeight" min="30" max="200" required>
+                </div>
+                <div class="profile-form-group">
+                    <label for="editFitnessLevel">Fitness Level</label>
+                    <select id="editFitnessLevel" required>
+                        <option value="">Select level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="profile-save-btn">
+                    💾 Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
