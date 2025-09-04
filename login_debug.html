@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker - Login (Debug Mode)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .logo p {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #51cf66;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-credentials {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .demo-credentials h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .demo-credentials p {
+            color: #555;
+            font-size: 0.8rem;
+            margin: 4px 0;
+        }
+
+        .debug-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .debug-info h3 {
+            color: #f39c12;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .debug-info p {
+            color: #e67e22;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 24px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>🏋️‍♂️</h1>
+            <h1>Fitness Tracker</h1>
+            <p>Track your fitness journey with AI-powered insights</p>
+        </div>
+
+        <div class="debug-info">
+            <h3>🐛 Debug Mode Active</h3>
+            <p>Rate limiting has been disabled for testing purposes</p>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" class="form-input" required value="demo">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-input" required value="demo123">
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+            <div class="register-link">
+                <p>Don't have an account? <a href="#" id="registerLink">Create Account</a></p>
+            </div>
+        </form>
+
+        <!-- Demo Credentials for Testing -->
+        <div class="demo-credentials">
+            <h4>🚀 Demo Account</h4>
+            <p><strong>Username:</strong> demo</p>
+            <p><strong>Password:</strong> demo123</p>
+            <p style="font-size: 0.75rem; margin-top: 8px; color: #666;">Credentials pre-filled for testing</p>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const registerLink = document.getElementById('registerLink');
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+
+            // Mock successful login for demo purposes
+            if (username === 'demo' && password === 'demo123') {
+                showSuccess('Login successful! Redirecting to main app...');
+                
+                // Store mock user data
+                const mockUser = {
+                    id: 1,
+                    username: 'demo',
+                    email: 'demo@example.com',
+                    firstName: 'Demo',
+                    lastName: 'User'
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(mockUser));
+                localStorage.setItem('authToken', 'mock_token_' + Date.now());
+                
+                // Redirect to main fitness tracker app
+                setTimeout(() => {
+                    window.location.href = 'professional_fitness_tracker.html';
+                }, 1500);
+                return;
+            }
+
+            // Try the actual API call with retry logic
+            let attempts = 0;
+            const maxAttempts = 3;
+            
+            while (attempts < maxAttempts) {
+                try {
+                    const response = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        showSuccess('Login successful! Redirecting...');
+                        
+                        // Store token and user info
+                        localStorage.setItem('authToken', data.token);
+                        localStorage.setItem('currentUser', JSON.stringify(data.user));
+                        
+                        // Check if admin
+                        if (data.user.role === 'admin') {
+                            localStorage.setItem('adminToken', data.token);
+                            setTimeout(() => {
+                                window.location.href = '/admin';
+                            }, 1000);
+                        } else {
+                            // Redirect to main app after short delay
+                            setTimeout(() => {
+                                window.location.href = 'professional_fitness_tracker.html';
+                            }, 1000);
+                        }
+                        return;
+                    } else if (response.status === 429) {
+                        // Rate limit error - wait before retrying
+                        attempts++;
+                        if (attempts < maxAttempts) {
+                            showError(`Rate limit hit. Retrying in ${attempts} seconds... (Attempt ${attempts}/${maxAttempts})`);
+                            await new Promise(resolve => setTimeout(resolve, attempts * 1000));
+                            continue;
+                        } else {
+                            showError('Rate limit exceeded. Using demo mode instead.');
+                            // Fall back to demo mode
+                            setTimeout(() => {
+                                const mockUser = {
+                                    id: 1,
+                                    username: username,
+                                    email: `${username}@example.com`
+                                };
+                                localStorage.setItem('currentUser', JSON.stringify(mockUser));
+                                localStorage.setItem('authToken', 'demo_token_' + Date.now());
+                                window.location.href = 'professional_fitness_tracker.html';
+                            }, 2000);
+                            return;
+                        }
+                    } else {
+                        showError(data.error || 'Login failed');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    attempts++;
+                    if (attempts < maxAttempts) {
+                        showError(`Connection error. Retrying... (Attempt ${attempts}/${maxAttempts})`);
+                        await new Promise(resolve => setTimeout(resolve, attempts * 1000));
+                    } else {
+                        showError('Connection failed. Using demo mode instead.');
+                        // Fall back to demo mode
+                        setTimeout(() => {
+                            const mockUser = {
+                                id: 1,
+                                username: username,
+                                email: `${username}@example.com`
+                            };
+                            localStorage.setItem('currentUser', JSON.stringify(mockUser));
+                            localStorage.setItem('authToken', 'demo_token_' + Date.now());
+                            window.location.href = 'professional_fitness_tracker.html';
+                        }, 2000);
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Handle registration link
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSuccess('Registration is available in the full version. Using demo account for now.');
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Auto-fill demo credentials for easy testing
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                document.getElementById('username').value = 'demo';
+                document.getElementById('password').value = 'demo123';
+            }
+        });
+
+        // Show debug info on page load
+        window.addEventListener('load', () => {
+            console.log('🐛 Debug Mode: Rate limiting disabled');
+            console.log('🔑 Demo credentials: demo/demo123');
+        });
+    </script>
+</body>
+</html>

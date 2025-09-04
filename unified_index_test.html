@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Performance Index Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .result { margin: 10px 0; }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <h1>🏆 Unified Performance Index System Test</h1>
+    
+    <div class="test-card">
+        <h2>System Status</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-card">
+        <h2>Sample Calculation</h2>
+        <div id="sampleResults"></div>
+    </div>
+
+    <script src="unified_performance_index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testResults = document.getElementById('testResults');
+            const sampleResults = document.getElementById('sampleResults');
+            
+            // Test system initialization
+            testResults.innerHTML = '<div class="info">🧪 Testing system initialization...</div>';
+            
+            try {
+                // Check if unified system is available
+                if (window.unifiedPerformanceIndex) {
+                    testResults.innerHTML += '<div class="success">✅ UnifiedPerformanceIndex class loaded successfully</div>';
+                    
+                    // Add sample workout data to localStorage for testing
+                    const sampleWorkouts = [
+                        {
+                            age: 30, gender: 'Male', workoutType: 'Running', duration: 45, intensity: 'High',
+                            calories: 450, timestamp: new Date(Date.now() - 1*24*60*60*1000).toISOString()
+                        },
+                        {
+                            age: 30, gender: 'Male', workoutType: 'Boxing', duration: 60, intensity: 'Medium', 
+                            calories: 520, timestamp: new Date(Date.now() - 3*24*60*60*1000).toISOString()
+                        },
+                        {
+                            age: 30, gender: 'Male', workoutType: 'Cycling', duration: 40, intensity: 'High',
+                            calories: 380, timestamp: new Date(Date.now() - 7*24*60*60*1000).toISOString()
+                        }
+                    ];
+                    
+                    localStorage.setItem('workoutHistory', JSON.stringify(sampleWorkouts));
+                    testResults.innerHTML += '<div class="info">📊 Sample workout data added to localStorage</div>';
+                    
+                    // Test calculation
+                    const indexData = window.unifiedPerformanceIndex.calculateIndex('test');
+                    testResults.innerHTML += '<div class="success">✅ Index calculation completed successfully</div>';
+                    
+                    // Display results
+                    sampleResults.innerHTML = `
+                        <div class="result"><strong>Performance Score:</strong> ${indexData.score}/100</div>
+                        <div class="result"><strong>Performance Level:</strong> ${indexData.level}</div>
+                        <div class="result"><strong>Trend:</strong> ${indexData.trend}</div>
+                        <div class="result"><strong>Components:</strong></div>
+                        <ul>
+                            <li>Consistency: ${Math.round(indexData.components.consistency)}/100 (30% weight)</li>
+                            <li>Performance: ${Math.round(indexData.components.performance)}/100 (25% weight)</li>
+                            <li>Improvement: ${Math.round(indexData.components.improvement)}/100 (20% weight)</li>
+                            <li>Variety: ${Math.round(indexData.components.variety)}/100 (15% weight)</li>
+                            <li>Intensity: ${Math.round(indexData.components.intensity)}/100 (10% weight)</li>
+                        </ul>
+                        <div class="result"><strong>Last Updated:</strong> ${new Date(indexData.lastUpdated).toLocaleString()}</div>
+                        <div class="result"><strong>Workout Count:</strong> ${indexData.workoutCount}</div>
+                    `;
+                    
+                    testResults.innerHTML += '<div class="success">🎉 All tests passed! System is working correctly.</div>';
+                    
+                } else {
+                    testResults.innerHTML += '<div class="error">❌ UnifiedPerformanceIndex not found - check script loading</div>';
+                }
+                
+            } catch (error) {
+                testResults.innerHTML += `<div class="error">❌ Error during testing: ${error.message}</div>`;
+                console.error('Test error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

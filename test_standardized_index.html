@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Standardized Performance Index</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container { 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 15px; 
+            padding: 30px; 
+            backdrop-filter: blur(10px);
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 10px; 
+        }
+        .score-display { 
+            font-size: 24px; 
+            font-weight: bold; 
+            text-align: center; 
+            margin: 10px 0; 
+            padding: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .component-card {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .component-score {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .benchmark-status {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover { background: #45a049; }
+        .test-log {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Standardized Performance Index Testing</h1>
+        <p>Testing the rebuilt Performance Index system with industry-standard benchmarks</p>
+
+        <div class="test-section">
+            <h2>📊 Current Performance Index</h2>
+            <div class="score-display">
+                Score: <span id="currentScore">Calculating...</span><br>
+                Level: <span id="currentLevel">-</span>
+            </div>
+            
+            <div class="component-grid">
+                <div class="component-card">
+                    <h4>Consistency (25%)</h4>
+                    <div class="component-score" id="consistencyScore">-</div>
+                    <div class="benchmark-status" id="consistencyStatus">-</div>
+                </div>
+                <div class="component-card">
+                    <h4>Performance (25%)</h4>
+                    <div class="component-score" id="performanceScore">-</div>
+                    <div class="benchmark-status" id="performanceStatus">-</div>
+                </div>
+                <div class="component-card">
+                    <h4>Improvement (20%)</h4>
+                    <div class="component-score" id="improvementScore">-</div>
+                    <div class="benchmark-status" id="improvementStatus">-</div>
+                </div>
+                <div class="component-card">
+                    <h4>Variety (15%)</h4>
+                    <div class="component-score" id="varietyScore">-</div>
+                    <div class="benchmark-status" id="varietyStatus">-</div>
+                </div>
+                <div class="component-card">
+                    <h4>Intensity (15%)</h4>
+                    <div class="component-score" id="intensityScore">-</div>
+                    <div class="benchmark-status" id="intensityStatus">-</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Test Cases</h2>
+            <button onclick="testNewUser()">Test New User</button>
+            <button onclick="testRegularUser()">Test Regular User (4/week)</button>
+            <button onclick="testAdvancedUser()">Test Advanced User (Daily)</button>
+            <button onclick="generateSampleWorkouts()">Generate Sample Workouts</button>
+            <button onclick="clearData()">Clear All Data</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Test Results Log</h2>
+            <div id="testLog" class="test-log">Ready to run tests...\n</div>
+        </div>
+    </div>
+
+    <script src="unified_performance_index.js"></script>
+    <script>
+        let testIndex;
+        
+        function log(message) {
+            const logElement = document.getElementById('testLog');
+            logElement.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function updateDisplay(indexData) {
+            if (!indexData) return;
+            
+            document.getElementById('currentScore').textContent = indexData.score;
+            document.getElementById('currentLevel').textContent = indexData.level;
+            
+            // Update components
+            document.getElementById('consistencyScore').textContent = indexData.components.consistency;
+            document.getElementById('performanceScore').textContent = indexData.components.performance;
+            document.getElementById('improvementScore').textContent = indexData.components.improvement;
+            document.getElementById('varietyScore').textContent = indexData.components.variety;
+            document.getElementById('intensityScore').textContent = indexData.components.intensity;
+            
+            // Update benchmark status
+            if (indexData.benchmarksMet) {
+                document.getElementById('consistencyStatus').textContent = indexData.benchmarksMet.consistency;
+                document.getElementById('performanceStatus').textContent = indexData.benchmarksMet.performance;
+                document.getElementById('improvementStatus').textContent = indexData.benchmarksMet.improvement;
+                document.getElementById('varietyStatus').textContent = indexData.benchmarksMet.variety;
+                document.getElementById('intensityStatus').textContent = indexData.benchmarksMet.intensity;
+            }
+        }
+
+        function testNewUser() {
+            log('Testing New User scenario...');
+            localStorage.removeItem('workoutHistory');
+            
+            if (typeof UnifiedPerformanceIndex !== 'undefined') {
+                testIndex = new UnifiedPerformanceIndex();
+                const result = testIndex.calculateIndex('test-new');
+                log(`New User Result - Score: ${result.score}, Level: ${result.level}`);
+                log(`Expected: Score ~25, Level "Getting Started"`);
+                updateDisplay(result);
+            } else {
+                log('ERROR: UnifiedPerformanceIndex class not found');
+            }
+        }
+
+        function testRegularUser() {
+            log('Testing Regular User scenario (4 workouts/week)...');
+            generateSampleWorkouts(16); // 4 weeks of regular workouts
+            
+            const result = testIndex.calculateIndex('test-regular');
+            log(`Regular User Result - Score: ${result.score}, Level: ${result.level}`);
+            log(`Expected: Score ~70, Level "Intermediate"`);
+            updateDisplay(result);
+        }
+
+        function testAdvancedUser() {
+            log('Testing Advanced User scenario (daily workouts)...');
+            generateSampleWorkouts(30); // 30 days of workouts
+            
+            const result = testIndex.calculateIndex('test-advanced');
+            log(`Advanced User Result - Score: ${result.score}, Level: ${result.level}`);
+            log(`Expected: Score ~85, Level "Advanced"`);
+            updateDisplay(result);
+        }
+
+        function generateSampleWorkouts(count = 10) {
+            log(`Generating ${count} sample workouts...`);
+            const workouts = [];
+            const activities = ['running', 'cycling', 'swimming', 'weightlifting', 'boxing', 'walking', 'yoga'];
+            
+            for (let i = 0; i < count; i++) {
+                const daysAgo = Math.floor(i / (count / 30)); // Spread over 30 days
+                const date = new Date();
+                date.setDate(date.getDate() - daysAgo);
+                
+                const workout = {
+                    date: date.toISOString(),
+                    timestamp: date.toISOString(),
+                    activity: activities[Math.floor(Math.random() * activities.length)],
+                    duration: 30 + Math.random() * 30, // 30-60 minutes
+                    calories: 200 + Math.random() * 300, // 200-500 calories
+                    heartRate: 120 + Math.random() * 60, // 120-180 bpm
+                    age: 25,
+                    weight: 70,
+                    gender: 'male'
+                };
+                workouts.push(workout);
+            }
+            
+            localStorage.setItem('workoutHistory', JSON.stringify(workouts));
+            log(`Generated ${count} workouts with variety: ${new Set(workouts.map(w => w.activity)).size} different activities`);
+        }
+
+        function clearData() {
+            localStorage.removeItem('workoutHistory');
+            localStorage.clear();
+            log('Cleared all workout data and storage');
+            
+            // Reset display
+            updateDisplay({
+                score: 0,
+                level: 'New User',
+                components: { consistency: 0, performance: 0, improvement: 50, variety: 0, intensity: 0 },
+                benchmarksMet: { consistency: 'N/A', performance: 'N/A', improvement: 'N/A', variety: 'N/A', intensity: 'N/A' }
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            log('Standardized Performance Index Test Page Loaded');
+            
+            try {
+                if (typeof UnifiedPerformanceIndex !== 'undefined') {
+                    testIndex = new UnifiedPerformanceIndex();
+                    log('✅ UnifiedPerformanceIndex class loaded successfully');
+                    
+                    // Test current state
+                    const current = testIndex.calculateIndex('default');
+                    log(`Current system state - Score: ${current.score}, Level: ${current.level}`);
+                    updateDisplay(current);
+                } else {
+                    log('❌ ERROR: UnifiedPerformanceIndex class not available');
+                }
+            } catch (error) {
+                log(`❌ ERROR initializing: ${error.message}`);
+            }
+        });
+    </script>
+</body>
+</html>

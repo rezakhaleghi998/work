@@ -1,6 +1,12 @@
-# 🏃‍♂️ Fitness Tracker - Complete Web Application
+# Professional Fitness Tracker - Render Deployment
 
-A comprehensive fitness tracking web application with admin dashboard, user management, and multi-database support.
+A full-stack fitness tracking application with calorie prediction, user authentication, and admin dashboard. Deployed on Render with PostgreSQL database integration.
+
+## 🚀 Live Demo
+
+- **Frontend**: https://fitness-tracker-frontend.onrender.com
+- **Backend API**: https://fitness-tracker-backend.onrender.com/api
+- **Demo Account**: Email: `demo`, Password: `demo123`
 
 ## ✨ Features
 

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Summary Index - Integration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #2980b9;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+    </style>
+</head>
+<body>
+    <h1>🏃‍♂️ User Summary Index - Integration Test</h1>
+    
+    <div class="test-container">
+        <h2>📋 System Status</h2>
+        <div id="systemStatus">Initializing...</div>
+        <button class="test-button" onclick="checkSystemStatus()">🔍 Check Status</button>
+    </div>
+
+    <div class="test-container">
+        <h2>🧪 Run Tests</h2>
+        <button class="test-button" onclick="runBasicTests()">▶️ Basic Functionality</button>
+        <button class="test-button" onclick="runFullTestSuite()">🧪 Full Test Suite</button>
+        <button class="test-button" onclick="demonstrateFeatures()">🎪 Feature Demo</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>📊 Sample Data</h2>
+        <button class="test-button" onclick="createSampleData()">📝 Create Sample Workouts</button>
+        <button class="test-button" onclick="clearAllData()">🗑️ Clear All Data</button>
+        <button class="test-button" onclick="showCurrentData()">👁️ Show Current Data</button>
+        <div id="dataResults"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎯 Summary Index Demo</h2>
+        <div id="summaryIndexDemo"></div>
+        <button class="test-button" onclick="calculateDemoIndex()">📊 Calculate Index</button>
+        <button class="test-button" onclick="showHistoryDemo()">📈 Show History</button>
+    </div>
+
+    <!-- Include the User Summary Index system -->
+    <script src="user_summary_index.js"></script>
+    <script src="summary_index_ui.js"></script>
+    <script src="summary_index_tester.js"></script>
+
+    <script>
+        let testSummaryIndex = null;
+
+        function checkSystemStatus() {
+            const statusDiv = document.getElementById('systemStatus');
+            let status = [];
+            
+            // Check if classes are available
+            status.push(typeof UserSummaryIndex !== 'undefined' ? 
+                '✅ UserSummaryIndex class loaded' : '❌ UserSummaryIndex class missing');
+            status.push(typeof SummaryIndexUI !== 'undefined' ? 
+                '✅ SummaryIndexUI class loaded' : '❌ SummaryIndexUI class missing');
+            status.push(typeof SummaryIndexTester !== 'undefined' ? 
+                '✅ SummaryIndexTester class loaded' : '❌ SummaryIndexTester class missing');
+            
+            // Check global instances
+            status.push(window.summaryIndexInstance ? 
+                '✅ Global summaryIndexInstance available' : '❌ Global summaryIndexInstance missing');
+            status.push(window.summaryIndexUI ? 
+                '✅ Global summaryIndexUI available' : '❌ Global summaryIndexUI missing');
+            
+            // Check localStorage
+            const workoutHistory = localStorage.getItem('workoutHistory');
+            status.push(workoutHistory ? 
+                `✅ Workout history: ${JSON.parse(workoutHistory).length} workouts` : 
+                '⚠️ No workout history found');
+            
+            statusDiv.innerHTML = status.map(s => `<div class="test-result ${s.includes('✅') ? 'success' : s.includes('❌') ? 'error' : 'info'}">${s}</div>`).join('');
+        }
+
+        function runBasicTests() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result info">Running basic tests...</div>';
+            
+            try {
+                // Initialize test instance
+                testSummaryIndex = new UserSummaryIndex();
+                
+                // Test basic calculation
+                const emptyIndex = testSummaryIndex.calculateCurrentIndex('test_user');
+                const hasScore = emptyIndex.hasOwnProperty('score');
+                const hasLevel = emptyIndex.hasOwnProperty('level');
+                
+                let results = [];
+                results.push(hasScore ? '✅ Index calculation returns score' : '❌ Missing score property');
+                results.push(hasLevel ? '✅ Index calculation returns level' : '❌ Missing level property');
+                results.push(emptyIndex.score >= 0 && emptyIndex.score <= 100 ? 
+                    '✅ Score in valid range (0-100)' : '❌ Score out of range');
+                
+                resultsDiv.innerHTML = results.map(r => 
+                    `<div class="test-result ${r.includes('✅') ? 'success' : 'error'}">${r}</div>`).join('');
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-result error">❌ Basic test failed: ${error.message}</div>`;
+            }
+        }
+
+        function runFullTestSuite() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result info">Running full test suite...</div>';
+            
+            try {
+                const tester = new SummaryIndexTester();
+                
+                // Capture console output
+                const originalLog = console.log;
+                let testOutput = [];
+                console.log = (...args) => {
+                    testOutput.push(args.join(' '));
+                    originalLog.apply(console, args);
+                };
+                
+                tester.runAllTests();
+                
+                // Restore console.log
+                console.log = originalLog;
+                
+                // Display results
+                const passedCount = tester.testResults.filter(r => r.status === 'PASSED').length;
+                const totalCount = tester.testResults.length;
+                
+                let resultsHTML = `<div class="test-result ${passedCount === totalCount ? 'success' : 'error'}">
+                    🎯 Tests Passed: ${passedCount}/${totalCount}
+                </div>`;
+                
+                tester.testResults.forEach(result => {
+                    const cssClass = result.status === 'PASSED' ? 'success' : 'error';
+                    resultsHTML += `<div class="test-result ${cssClass}">
+                        ${result.status === 'PASSED' ? '✅' : '❌'} ${result.test}: ${result.status}
+                        ${result.error ? `<br><small>Error: ${result.error}</small>` : ''}
+                    </div>`;
+                });
+                
+                resultsDiv.innerHTML = resultsHTML;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-result error">❌ Full test suite failed: ${error.message}</div>`;
+            }
+        }
+
+        function demonstrateFeatures() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result info">Running feature demonstration...</div>';
+            
+            try {
+                const tester = new SummaryIndexTester();
+                tester.demonstrateFeatures();
+                
+                resultsDiv.innerHTML = `
+                    <div class="test-result success">✅ Feature demonstration completed</div>
+                    <div class="test-result info">Check browser console for detailed output</div>
+                `;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-result error">❌ Feature demo failed: ${error.message}</div>`;
+            }
+        }
+
+        function createSampleData() {
+            const dataDiv = document.getElementById('dataResults');
+            
+            try {
+                // Create realistic sample workout data
+                const sampleWorkouts = [
+                    {
+                        calories: 320, duration: 30, workoutType: 'Running', intensity: 'Medium',
+                        heartRate: 145, age: 28, gender: 'Male', weight: 75, height: 180,
+                        efficiency: 78, bmi: 23.1,
+                        timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        calories: 450, duration: 45, workoutType: 'Cycling', intensity: 'High',
+                        heartRate: 165, age: 28, gender: 'Male', weight: 75, height: 180,
+                        efficiency: 85, bmi: 23.1,
+                        timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        calories: 280, duration: 25, workoutType: 'Boxing', intensity: 'High',
+                        heartRate: 158, age: 28, gender: 'Male', weight: 75, height: 180,
+                        efficiency: 82, bmi: 23.1,
+                        timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        calories: 380, duration: 35, workoutType: 'Swimming', intensity: 'Medium',
+                        heartRate: 140, age: 28, gender: 'Male', weight: 75, height: 180,
+                        efficiency: 80, bmi: 23.1,
+                        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        calories: 410, duration: 40, workoutType: 'Running', intensity: 'High',
+                        heartRate: 170, age: 28, gender: 'Male', weight: 75, height: 180,
+                        efficiency: 88, bmi: 23.1,
+                        timestamp: new Date().toISOString()
+                    }
+                ];
+                
+                // Save to localStorage (same format as existing system)
+                localStorage.setItem('workoutHistory', JSON.stringify(sampleWorkouts));
+                
+                dataDiv.innerHTML = `
+                    <div class="test-result success">✅ Created ${sampleWorkouts.length} sample workouts</div>
+                    <div class="test-result info">Sample data includes: Running, Cycling, Boxing, Swimming workouts over the last week</div>
+                `;
+                
+                // Trigger index calculation if system is available
+                if (window.summaryIndexInstance) {
+                    const indexData = window.summaryIndexInstance.calculateCurrentIndex('default');
+                    dataDiv.innerHTML += `
+                        <div class="test-result success">📊 Index calculated: Score ${indexData.score} (${indexData.level})</div>
+                    `;
+                }
+                
+            } catch (error) {
+                dataDiv.innerHTML = `<div class="test-result error">❌ Failed to create sample data: ${error.message}</div>`;
+            }
+        }
+
+        function clearAllData() {
+            const dataDiv = document.getElementById('dataResults');
+            
+            try {
+                // Clear all related localStorage
+                localStorage.removeItem('workoutHistory');
+                localStorage.removeItem('userSummaryIndex_default');
+                localStorage.removeItem('indexHistory_default');
+                localStorage.removeItem('lastWorkoutDate');
+                localStorage.removeItem('workoutCount');
+                
+                dataDiv.innerHTML = `
+                    <div class="test-result success">✅ All data cleared from localStorage</div>
+                    <div class="test-result info">You can now test with fresh data</div>
+                `;
+                
+            } catch (error) {
+                dataDiv.innerHTML = `<div class="test-result error">❌ Failed to clear data: ${error.message}</div>`;
+            }
+        }
+
+        function showCurrentData() {
+            const dataDiv = document.getElementById('dataResults');
+            
+            try {
+                const workoutHistory = JSON.parse(localStorage.getItem('workoutHistory') || '[]');
+                const currentIndex = JSON.parse(localStorage.getItem('userSummaryIndex_default') || 'null');
+                const indexHistory = JSON.parse(localStorage.getItem('indexHistory_default') || '[]');
+                
+                let dataHTML = `
+                    <div class="test-result info">💾 Current Data Overview:</div>
+                    <div class="test-result ${workoutHistory.length > 0 ? 'success' : 'error'}">
+                        🏃‍♂️ Workouts: ${workoutHistory.length} entries
+                    </div>
+                    <div class="test-result ${currentIndex ? 'success' : 'info'}">
+                        📊 Current Index: ${currentIndex ? `Score ${currentIndex.score} (${currentIndex.level})` : 'Not calculated yet'}
+                    </div>
+                    <div class="test-result ${indexHistory.length > 0 ? 'success' : 'info'}">
+                        📈 Index History: ${indexHistory.length} entries
+                    </div>
+                `;
+                
+                if (workoutHistory.length > 0) {
+                    const lastWorkout = workoutHistory[workoutHistory.length - 1];
+                    dataHTML += `
+                        <div class="test-result info">
+                            🔄 Last Workout: ${lastWorkout.workoutType} - ${lastWorkout.calories} cal - ${new Date(lastWorkout.timestamp).toLocaleDateString()}
+                        </div>
+                    `;
+                }
+                
+                dataDiv.innerHTML = dataHTML;
+                
+            } catch (error) {
+                dataDiv.innerHTML = `<div class="test-result error">❌ Failed to show data: ${error.message}</div>`;
+            }
+        }
+
+        function calculateDemoIndex() {
+            const demoDiv = document.getElementById('summaryIndexDemo');
+            
+            try {
+                if (!testSummaryIndex) {
+                    testSummaryIndex = new UserSummaryIndex();
+                }
+                
+                const indexData = testSummaryIndex.calculateCurrentIndex('demo');
+                
+                let demoHTML = `
+                    <div class="test-result success">
+                        <h3>📊 Current Summary Index</h3>
+                        <p><strong>Score:</strong> ${indexData.score}/100</p>
+                        <p><strong>Level:</strong> ${indexData.level}</p>
+                        <p><strong>Total Workouts:</strong> ${indexData.totalWorkouts || 0}</p>
+                    </div>
+                `;
+                
+                if (indexData.components) {
+                    demoHTML += `
+                        <div class="test-result info">
+                            <h4>Component Breakdown:</h4>
+                            <ul>
+                                <li>Consistency: ${Math.round(indexData.components.consistency || 0)}/100</li>
+                                <li>Performance: ${Math.round(indexData.components.performance || 0)}/100</li>
+                                <li>Improvement: ${Math.round(indexData.components.improvement || 0)}/100</li>
+                                <li>Variety: ${Math.round(indexData.components.variety || 0)}/100</li>
+                                <li>Intensity: ${Math.round(indexData.components.intensity || 0)}/100</li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (indexData.insights && indexData.insights.length > 0) {
+                    demoHTML += `
+                        <div class="test-result info">
+                            <h4>💡 Insights:</h4>
+                            <ul>
+                                ${indexData.insights.map(insight => `<li>${insight}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                demoDiv.innerHTML = demoHTML;
+                
+            } catch (error) {
+                demoDiv.innerHTML = `<div class="test-result error">❌ Failed to calculate demo index: ${error.message}</div>`;
+            }
+        }
+
+        function showHistoryDemo() {
+            const demoDiv = document.getElementById('summaryIndexDemo');
+            
+            try {
+                if (!testSummaryIndex) {
+                    testSummaryIndex = new UserSummaryIndex();
+                }
+                
+                const history = testSummaryIndex.getIndexHistory('demo', 30);
+                const comparison = testSummaryIndex.compareWithPrevious('demo', 7);
+                const trends = testSummaryIndex.getTrendAnalysis('demo', 14);
+                
+                let historyHTML = `
+                    <div class="test-result info">
+                        <h3>📈 Historical Analysis</h3>
+                        <p><strong>History Entries:</strong> ${history.length}</p>
+                    </div>
+                `;
+                
+                if (comparison) {
+                    historyHTML += `
+                        <div class="test-result ${comparison.trend === 'improving' ? 'success' : comparison.trend === 'declining' ? 'error' : 'info'}">
+                            <h4>Weekly Comparison:</h4>
+                            <p>Current: ${comparison.current} | Previous: ${comparison.previous}</p>
+                            <p>Change: ${comparison.difference > 0 ? '+' : ''}${comparison.difference} (${comparison.percentChange}%)</p>
+                            <p>Trend: ${comparison.trend}</p>
+                        </div>
+                    `;
+                }
+                
+                if (trends && trends.trend !== 'insufficient_data') {
+                    historyHTML += `
+                        <div class="test-result info">
+                            <h4>Trend Analysis:</h4>
+                            <p>Direction: ${trends.trend}</p>
+                            <p>Average Score: ${trends.averageScore}</p>
+                            <p>Message: ${trends.message}</p>
+                        </div>
+                    `;
+                }
+                
+                demoDiv.innerHTML = historyHTML;
+                
+            } catch (error) {
+                demoDiv.innerHTML = `<div class="test-result error">❌ Failed to show history: ${error.message}</div>`;
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkSystemStatus();
+                
+                // Auto-calculate demo if sample data exists
+                const workoutHistory = localStorage.getItem('workoutHistory');
+                if (workoutHistory && JSON.parse(workoutHistory).length > 0) {
+                    calculateDemoIndex();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
